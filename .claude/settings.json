@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(xcodebuild build:*)",
+      "Bash(swift test:*)"
+    ],
+    "ask": [
+      "Bash(codesign:*)",
+      "Bash(xcrun notarytool submit:*)",
+      "Bash(notarytool submit:*)",
+      "Bash(gh release create:*)",
+      "Bash(brew tap:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}
