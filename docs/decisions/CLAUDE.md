@@ -23,3 +23,21 @@ Shared schema is in the parent [../CLAUDE.md](../CLAUDE.md).
   `../log.md` entry.
 - Never edit an accepted decision's substance to reverse it. Supersede it: set
   the old one's `status` to `Superseded` and write a new ADR.
+
+## Body formatting
+
+Match the existing ADRs; keep it simple.
+
+- `## Context`, `## Decision`, `## How`: prose, hard-wrapped near 80 columns.
+  State the decision plainly in one or two sentences under `## Decision`.
+- `## Consequences`: a `-` bullet list, one consequence per bullet. Include the
+  costs and trade-offs, not only the upside.
+- `## Alternatives / deferred`: a `-` bullet list, each `<alternative>:
+  <verdict>`, where the verdict is `rejected`, `deferred`, or `revisit if ...`
+  followed by the reason.
+- Bullets use `-`; the `*` marker is reserved for `index.md`.
+- Backticks for filenames, commands, types, enum cases, and field names. No bold
+  in the body.
+- Cross-link by relative path: a bare number for a sibling ADR
+  (`[007](007-container-data-model.md)`), a short phrase for other concepts
+  (`[json output](../reference/cli-json-output.md)`).
