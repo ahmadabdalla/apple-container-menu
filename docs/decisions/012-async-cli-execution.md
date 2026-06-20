@@ -1,7 +1,13 @@
-# 12. Async CLI execution
+---
+type: Decision
+title: Async CLI execution
+description: Run the CLI off the main thread with async/await so the menu bar stays responsive.
+timestamp: 2026-06-21
+tags: [concurrency, cli, async]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 12. Async CLI execution
 
 ## Context
 

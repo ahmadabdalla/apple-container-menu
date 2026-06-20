@@ -1,3 +1,11 @@
+---
+type: Instruction
+title: App constraints
+description: SwiftUI MenuBarExtra app constraints: unsandboxed, LSUIElement, macOS 13+ Apple silicon.
+timestamp: 2026-06-21
+tags: [app, swiftui, constraints]
+---
+
 # App constraints
 
 SwiftUI menu bar app code for `apple-container-menu`.

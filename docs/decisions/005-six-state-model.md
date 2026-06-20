@@ -1,7 +1,13 @@
-# 5. Six-state model
+---
+type: Decision
+title: Six-state model
+description: A single enum models loading, CLI-not-found, service-not-running, empty, populated, and error.
+timestamp: 2026-06-21
+tags: [state, model, ui]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 5. Six-state model
 
 ## Context
 

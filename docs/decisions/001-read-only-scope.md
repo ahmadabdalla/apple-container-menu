@@ -1,7 +1,13 @@
-# 1. Read-only monitor for the MVP
+---
+type: Decision
+title: Read-only monitor for the MVP
+description: The MVP only runs observing commands; mutating actions are deferred to a later additive layer.
+timestamp: 2026-06-21
+tags: [mvp, read-only, scope]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 1. Read-only monitor for the MVP
 
 ## Context
 

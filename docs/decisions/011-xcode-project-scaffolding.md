@@ -1,7 +1,13 @@
-# 11. Xcode project scaffolding
+---
+type: Decision
+title: Xcode project scaffolding
+description: Ship as a raw Xcode project driving build, sign, and notarize via composable scripts.
+timestamp: 2026-06-21
+tags: [build, xcode, tooling]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 11. Xcode project scaffolding
 
 ## Context
 

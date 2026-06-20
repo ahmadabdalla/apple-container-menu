@@ -1,13 +1,20 @@
-# 2. Parse container JSON output
+---
+type: Decision
+title: Parse container JSON output
+description: Read container state via container ls --all --format json and decode only the fields the UI needs.
+timestamp: 2026-06-21
+tags: [cli, json, parsing]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 2. Parse container JSON output
 
 ## Context
 
 The app needs structured container data. `container ls` defaults to a human
-table but supports `--format json` (verified values: json, table, yaml, toml).
-Scraping the table couples the app to column layout and spacing.
+table but supports `--format json` (see
+[json output](../reference/cli-json-output.md)). Scraping the table couples the
+app to column layout and spacing.
 
 ## Decision
 

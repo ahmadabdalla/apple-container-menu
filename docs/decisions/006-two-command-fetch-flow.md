@@ -1,14 +1,20 @@
-# 6. Two-command fetch flow
+---
+type: Decision
+title: Two-command fetch flow
+description: Gate on container system status exit code, then run ls, to distinguish service-down from empty or error.
+timestamp: 2026-06-21
+tags: [cli, fetch, state]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 6. Two-command fetch flow
 
 ## Context
 
 To distinguish "service not running" from "no containers" or "error", the app
-must know whether the service is up. Experiment (service stopped): `container
-system status` exits non-zero with a clean message; `container ls --format json`
-exits non-zero with a noisy internal error (XPC) plus a hint line.
+must know whether the service is up. Experiment shows `container system status`
+is a clean exit-code signal while `container ls` fails noisily when the service
+is down (see [service status](../reference/service-status.md)).
 
 ## Decision
 

@@ -1,12 +1,19 @@
-# 7. Container data model
+---
+type: Decision
+title: Container data model
+description: Decode five fields per container and show all containers including infrastructure ones.
+timestamp: 2026-06-21
+tags: [model, json, data]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 7. Container data model
 
 ## Context
 
 The `ls --format json` payload is large and deeply nested (config, networks,
-mounts, env, resources, image descriptor). A row needs only enough to answer
+mounts, env, resources, image descriptor; see
+[json output](../reference/cli-json-output.md)). A row needs only enough to answer
 "what is this and is it alive", plus a couple of useful extras.
 
 ## Decision

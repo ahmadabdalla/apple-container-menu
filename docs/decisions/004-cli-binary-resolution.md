@@ -1,15 +1,20 @@
-# 4. CLI binary resolution
+---
+type: Decision
+title: CLI binary resolution
+description: Resolve the container binary from an ordered candidate list because a GUI app does not inherit shell PATH.
+timestamp: 2026-06-21
+tags: [cli, path, resolution]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 4. CLI binary resolution
 
 ## Context
 
 A GUI app launched from Finder does not inherit the shell PATH, so invoking
 `container` by name fails in the shipped app even though it works in a terminal.
-The binary lives in different places by install method: Homebrew on Apple silicon
-at `/opt/homebrew/bin/container`, the official Apple pkg at
-`/usr/local/bin/container`.
+The binary lives in different places by install method (see
+[binary paths](../reference/binary-paths.md)).
 
 ## Decision
 

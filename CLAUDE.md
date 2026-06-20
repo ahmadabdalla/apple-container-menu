@@ -1,10 +1,23 @@
+---
+type: Instruction
+title: Repo operating doctrine and conventions
+description: Top-level PROSE doctrine, global conventions, and pointers to scoped instructions and the knowledge bundle.
+timestamp: 2026-06-21
+tags: [okf, authoring, doctrine, conventions]
+---
+
 # apple-container-menu
 
 Native macOS menu bar app (SwiftUI `MenuBarExtra`) that surfaces Apple's
 `container` CLI: running containers and basic actions. Distributed via GitHub
 Releases (signed, notarized `.dmg`); not targeting the Mac App Store.
 
+Curated knowledge (decisions, doctrine, verified facts) lives in the OKF bundle
+under `docs/`; start at `docs/index.md`.
+
 ## Operating doctrine (PROSE)
+
+Expanded why and how: `docs/doctrine/prose.md`. The eager rules:
 
 - Progressive disclosure: load context just in time. Keep instruction files
   thin; point to detail, do not inline it. Read a doc only when the task matches.
@@ -29,3 +42,4 @@ Releases (signed, notarized `.dmg`); not targeting the Mac App Store.
 - `App/CLAUDE.md`: SwiftUI / `MenuBarExtra` app constraints.
 - `Scripts/CLAUDE.md`: build, sign, notarize, package conventions.
 - `.github/CLAUDE.md`: CI and release workflow conventions.
+- `docs/CLAUDE.md`: OKF authoring contract for the knowledge bundle.

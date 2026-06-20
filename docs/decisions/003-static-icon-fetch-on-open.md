@@ -1,7 +1,13 @@
-# 3. Static icon, fetch on open
+---
+type: Decision
+title: Static icon, fetch on open
+description: The menu bar icon is static and the app fetches once when the menu opens, with no background poll.
+timestamp: 2026-06-21
+tags: [ui, fetch, performance]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 3. Static icon, fetch on open
 
 ## Context
 

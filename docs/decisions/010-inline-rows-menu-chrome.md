@@ -1,7 +1,13 @@
-# 10. Inline rows and menu chrome
+---
+type: Decision
+title: Inline rows and menu chrome
+description: Each container is one inline single-line item with Refresh and Quit fixed below the list.
+timestamp: 2026-06-21
+tags: [ui, layout, menu]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 10. Inline rows and menu chrome
 
 ## Context
 

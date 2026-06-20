@@ -1,7 +1,13 @@
-# 8. MenuBarExtra .menu style
+---
+type: Decision
+title: MenuBarExtra .menu style
+description: Use the native .menu style rather than .window, accepting reduced visual expressiveness.
+timestamp: 2026-06-21
+tags: [ui, menubarextra, swiftui]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 8. MenuBarExtra .menu style
 
 ## Context
 

@@ -1,7 +1,13 @@
-# 9. Last-known cache
+---
+type: Decision
+title: Last-known cache
+description: Render the last-known result synchronously on open and refresh the cache asynchronously.
+timestamp: 2026-06-21
+tags: [cache, ui, async]
+status: Accepted
+---
 
-Status: Accepted
-Date: 2026-06-21
+# 9. Last-known cache
 
 ## Context
 
