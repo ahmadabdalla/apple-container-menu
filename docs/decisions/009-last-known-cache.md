@@ -1,0 +1,37 @@
+# 9. Last-known cache
+
+Status: Accepted
+Date: 2026-06-21
+
+## Context
+
+The fetch is async (a process spawn returns tens of milliseconds after the menu
+opens). A SwiftUI `.menu` is effectively a snapshot at open time, and its ability
+to re-render items from an async result while already open is unreliable. Without
+a cache, the first open shows "Checking..." and may need a close-and-reopen to
+show data.
+
+## Decision
+
+Keep a last-known result in memory. On open, render it synchronously; kick the
+async fetch to update the cache for the next open.
+
+## How
+
+The cache holds the most recent successful fetch. Opening renders from cache
+immediately (or "Checking..." if cold), then the fetch-on-open refresh updates
+it. This is not background polling: it only fetches on open. A manual Refresh item
+(see [010](010-inline-rows-menu-chrome.md)) forces an update.
+
+## Consequences
+
+- The menu always has something to render synchronously; the UI never blocks.
+- Data is at most one open stale after a change; self-correcting.
+- The first cold open still shows "Checking..." until reopened.
+
+## Alternatives / deferred
+
+- Blocking fetch on open: rejected; freezes the menu bar, beachball risk if the
+  CLI or service is slow.
+- `.window` style: deferred; it updates reactively while open and avoids this
+  tension entirely (see [008](008-menubarextra-menu-style.md)).
