@@ -1,3 +1,11 @@
+---
+type: Instruction
+title: Scripts constraints
+description: Build, sign, notarize, and package script conventions: atomic, composable, gated, no hardcoded credentials.
+timestamp: 2026-06-21
+tags: [scripts, build, constraints]
+---
+
 # Scripts constraints
 
 Build, sign, notarize, and package scripts for distribution.
