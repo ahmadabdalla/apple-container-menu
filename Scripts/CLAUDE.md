@@ -1,7 +1,7 @@
 ---
 type: Instruction
 title: Scripts constraints
-description: Build, sign, notarize, and package script conventions: atomic, composable, gated, no hardcoded credentials.
+description: Build, sign, notarize, package, and repo-maintenance script conventions: atomic, composable, gated, lean comments, no hardcoded credentials.
 timestamp: 2026-06-21
 tags: [scripts, build, constraints]
 ---
@@ -19,3 +19,11 @@ Standing decisions:
   Homebrew tap pushes) require explicit approval; see `.claude/settings.json`.
 - Never hardcode signing identities or credentials; read them from the
   environment or keychain.
+- Comments are lean. Explain the non-obvious (a perl flag, a footgun, why a step
+  exists), not what the code already says. No banner blocks, no narrating obvious
+  lines.
+- Markdown is normalized by `format-markdown.sh` (whitespace only: trailing
+  whitespace, blank-line runs, final newline) and enforced by the
+  `.githooks/pre-commit` hook, which fixes and re-stages staged `.md`. A new clone
+  runs `git config core.hooksPath .githooks` once. See
+  `docs/decisions/014-markdown-format-enforcement.md`.
