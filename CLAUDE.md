@@ -30,6 +30,18 @@ Expanded why and how: `docs/doctrine/prose.md`. The eager rules:
 - Explicit hierarchy: conventions live in the nearest scoped `CLAUDE.md`;
   specificity rises as scope narrows. Read local first, then up to here.
 
+## Agent behavior
+
+Before writing code, ground every step in something written down: a decision in
+`docs/decisions/`, a reference in `docs/`, or an explicit line in the issue. If a
+step has no such source, stop and ask. Do not fill the gap from training data or
+general convention; an unstated requirement is a question, not a default.
+
+This is a behavior expectation, not an enforced gate. The repo trusts the agent
+to halt rather than guess, and trusts the human to specify enough that it rarely
+has to. The issue's Definition of Ready checklist is where that is confirmed
+before work starts.
+
 ## Global conventions
 
 - No em dashes, no emojis in code, comments, or docs.
