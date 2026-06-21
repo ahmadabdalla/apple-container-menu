@@ -20,5 +20,20 @@ Standing decisions:
   [docs/reference/swiftui-menubarextra.md](../docs/reference/swiftui-menubarextra.md).
 - Target macOS 13 (Ventura) and later, Apple silicon.
 
+Implementation patterns (footguns worth stating, detail in the ADRs):
+
+- Shelling out: drain stdout and stderr concurrently before reading the exit
+  status. Reading only one pipe deadlocks when the child fills the other pipe's
+  buffer. Run the CLI off the main thread (see
+  [012](../docs/decisions/012-async-cli-execution.md)).
+- Decoding: decode only the fields a row renders as required; everything else
+  (`image`, `containerPort`, `proto`) is optional and unknown keys are ignored,
+  so a payload reshape degrades one row instead of blanking the menu (see
+  [002](../docs/decisions/002-cli-output-json.md),
+  [007](../docs/decisions/007-container-data-model.md)).
+- Async refresh: a newer fetch cancels the in-flight one and the result is
+  applied only if not cancelled, so a slow earlier fetch cannot overwrite a
+  fresher cache (see [009](../docs/decisions/009-last-known-cache.md)).
+
 Build, signing, and CI concerns do not belong here; see `scripts/CLAUDE.md` and
 `.github/CLAUDE.md`.

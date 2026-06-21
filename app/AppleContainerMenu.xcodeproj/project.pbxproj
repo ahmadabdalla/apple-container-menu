@@ -8,11 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		8B77C0312C26A00100AC0001 /* AppleContainerMenuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0302C26A00100AC0001 /* AppleContainerMenuApp.swift */; };
+		8B77C0412C26A00100AC0001 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0402C26A00100AC0001 /* Container.swift */; };
+		8B77C0432C26A00100AC0001 /* MenuState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0422C26A00100AC0001 /* MenuState.swift */; };
+		8B77C0452C26A00100AC0001 /* ContainerCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0442C26A00100AC0001 /* ContainerCLI.swift */; };
+		8B77C0472C26A00100AC0001 /* ContainerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0462C26A00100AC0001 /* ContainerStore.swift */; };
+		8B77C0492C26A00100AC0001 /* ContainerMenuContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0482C26A00100AC0001 /* ContainerMenuContent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8B77C02D2C26A00100AC0001 /* AppleContainerMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleContainerMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B77C0302C26A00100AC0001 /* AppleContainerMenuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleContainerMenuApp.swift; sourceTree = "<group>"; };
+		8B77C0402C26A00100AC0001 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
+		8B77C0422C26A00100AC0001 /* MenuState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuState.swift; sourceTree = "<group>"; };
+		8B77C0442C26A00100AC0001 /* ContainerCLI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerCLI.swift; sourceTree = "<group>"; };
+		8B77C0462C26A00100AC0001 /* ContainerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerStore.swift; sourceTree = "<group>"; };
+		8B77C0482C26A00100AC0001 /* ContainerMenuContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerMenuContent.swift; sourceTree = "<group>"; };
 		8B77C0322C26A00100AC0001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -47,6 +57,11 @@
 			isa = PBXGroup;
 			children = (
 				8B77C0302C26A00100AC0001 /* AppleContainerMenuApp.swift */,
+				8B77C0402C26A00100AC0001 /* Container.swift */,
+				8B77C0422C26A00100AC0001 /* MenuState.swift */,
+				8B77C0442C26A00100AC0001 /* ContainerCLI.swift */,
+				8B77C0462C26A00100AC0001 /* ContainerStore.swift */,
+				8B77C0482C26A00100AC0001 /* ContainerMenuContent.swift */,
 				8B77C0322C26A00100AC0001 /* Info.plist */,
 			);
 			path = AppleContainerMenu;
@@ -121,6 +136,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B77C0312C26A00100AC0001 /* AppleContainerMenuApp.swift in Sources */,
+				8B77C0412C26A00100AC0001 /* Container.swift in Sources */,
+				8B77C0432C26A00100AC0001 /* MenuState.swift in Sources */,
+				8B77C0452C26A00100AC0001 /* ContainerCLI.swift in Sources */,
+				8B77C0472C26A00100AC0001 /* ContainerStore.swift in Sources */,
+				8B77C0492C26A00100AC0001 /* ContainerMenuContent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
