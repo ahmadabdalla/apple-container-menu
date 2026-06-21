@@ -22,9 +22,9 @@ the menu opens, at which point it fetches once.
 
 ## How
 
-The fetch is triggered from the menu content appearing on open. There is no timer
-and no background activity while the menu is closed. Idle cost is effectively
-zero.
+The fetch is triggered from `menuWillOpen` on the menu's delegate (see
+[015](015-appkit-status-item-open-trigger.md)). There is no timer and no
+background activity while the menu is closed. Idle cost is effectively zero.
 
 ## Consequences
 

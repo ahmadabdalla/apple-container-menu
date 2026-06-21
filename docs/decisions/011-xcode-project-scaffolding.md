@@ -11,7 +11,7 @@ status: Accepted
 
 ## Context
 
-A `MenuBarExtra` app must ship as a proper `.app` bundle with `Info.plist`
+A menu bar app must ship as a proper `.app` bundle with `Info.plist`
 (`LSUIElement`), an icon, and code signing. The build can be owned by a raw Xcode
 project, by SwiftPM with hand-rolled bundling, or by a generated project
 (XcodeGen/Tuist). The app architecture is independent of this choice.
@@ -40,6 +40,6 @@ and notarize pipeline stays scriptable.
 - Generated project (XcodeGen/Tuist): deferred. Text, diffable config plus Xcode's
   reliability; adopt later by writing a manifest that reproduces the project and
   dropping `pbxproj`. A toolkit swap, not an app rework.
-- SwiftPM plus hand-rolled bundle: rejected; a `MenuBarExtra` needs a real bundle
+- SwiftPM plus hand-rolled bundle: rejected; a menu bar app needs a real bundle
   and `LSUIElement` to appear in the menu bar, so the bundle work and its footguns
   are not worth it for the MVP.

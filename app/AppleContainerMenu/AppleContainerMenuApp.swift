@@ -1,14 +1,14 @@
-import AppKit
 import SwiftUI
 
 @main
 struct AppleContainerMenuApp: App {
-    @StateObject private var store = ContainerStore()
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
-        MenuBarExtra("Apple Container Menu", systemImage: "shippingbox") {
-            ContainerMenuContent(store: store)
+        // The UI is an AppKit NSStatusItem managed by AppDelegate (ADR 015).
+        // An LSUIElement app still needs a scene; this empty one adds no window.
+        Settings {
+            EmptyView()
         }
-        .menuBarExtraStyle(.menu)
     }
 }
