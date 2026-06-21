@@ -11,13 +11,14 @@ alternatives. Read one when your task touches its area.
 * [005 Six-state model](005-six-state-model.md) - One enum models loading, not-found, not-running, empty, populated, error.
 * [006 Two-command fetch flow](006-two-command-fetch-flow.md) - Gate on system status exit code, then run ls.
 * [007 Container data model](007-container-data-model.md) - Decode five fields per container; show all including infrastructure.
-* [008 MenuBarExtra .menu style](008-menubarextra-menu-style.md) - Use the native .menu style rather than .window.
+* [008 MenuBarExtra .menu style](008-menubarextra-menu-style.md) - Superseded by 015. Used the native .menu style rather than .window.
 * [009 Last-known cache](009-last-known-cache.md) - Render the last-known result on open; refresh the cache asynchronously.
 * [010 Inline rows and menu chrome](010-inline-rows-menu-chrome.md) - One inline single-line item per container; Refresh and Quit fixed below.
 * [011 Xcode project scaffolding](011-xcode-project-scaffolding.md) - Ship as a raw Xcode project driven by composable scripts.
 * [012 Async CLI execution](012-async-cli-execution.md) - Run the CLI off the main thread with async/await.
 * [013 Adopt Open Knowledge Format](013-okf-knowledge-format.md) - docs/ becomes an OKF v0.1 bundle and the CLAUDE.md files become nodes.
 * [014 Enforce markdown formatting with a pre-commit hook](014-markdown-format-enforcement.md) - One script normalizes whitespace; a git pre-commit hook fixes and re-stages it.
+* [015 AppKit status item open trigger](015-appkit-status-item-open-trigger.md) - Render the menu from an AppKit NSStatusItem so menuWillOpen fetches on open; supersedes 008.
 
 ## Scope
 

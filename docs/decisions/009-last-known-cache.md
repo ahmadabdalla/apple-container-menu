@@ -12,7 +12,8 @@ status: Accepted
 ## Context
 
 The fetch is async (a process spawn returns tens of milliseconds after the menu
-opens). A SwiftUI `.menu` is effectively a snapshot at open time, and its ability
+opens). The menu is effectively a snapshot at open time (see
+[015](015-appkit-status-item-open-trigger.md)), and its ability
 to re-render items from an async result while already open is unreliable. Without
 a cache, the first open shows "Checking..." and may need a close-and-reopen to
 show data.
@@ -39,5 +40,6 @@ it. This is not background polling: it only fetches on open. A manual Refresh it
 
 - Blocking fetch on open: rejected; freezes the menu bar, beachball risk if the
   CLI or service is slow.
-- `.window` style: deferred; it updates reactively while open and avoids this
-  tension entirely (see [008](008-menubarextra-menu-style.md)).
+- A reactive popover that re-renders while open: deferred; it would avoid this
+  tension, but the app uses a native `NSMenu` snapshot instead (see
+  [015](015-appkit-status-item-open-trigger.md)).
