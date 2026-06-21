@@ -5,8 +5,8 @@
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git add:*)",
-      "Bash(xcodebuild build:*)",
-      "Bash(swift test:*)"
+      "Bash(xcodebuild -project app/AppleContainerMenu.xcodeproj -scheme AppleContainerMenu build:*)",
+      "Bash(xcodebuild -project app/AppleContainerMenu.xcodeproj -scheme AppleContainerMenu test:*)"
     ],
     "ask": [
       "Bash(codesign:*)",

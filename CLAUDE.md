@@ -8,9 +8,12 @@ tags: [okf, authoring, doctrine, conventions]
 
 # apple-container-menu
 
-Native macOS menu bar app (SwiftUI `MenuBarExtra`) that surfaces Apple's
-`container` CLI: running containers and basic actions. Distributed via GitHub
-Releases (signed, notarized `.dmg`); not targeting the Mac App Store.
+Native macOS menu bar app (SwiftUI app with an AppKit `NSStatusItem` menu) that
+surfaces Apple's `container` CLI and shows running containers. The MVP is
+read-only; mutating actions (start, stop, remove) are deferred (see
+`docs/decisions/001-read-only-scope.md`). Planned, not yet present: signed,
+notarized `.dmg` distribution via GitHub Releases. The Mac App Store is a
+non-goal.
 
 Curated knowledge (decisions, doctrine, verified facts) lives in the OKF bundle
 under `docs/`; start at `docs/index.md`.
@@ -51,7 +54,7 @@ before work starts.
 
 ## Scoped instructions
 
-- `app/CLAUDE.md`: SwiftUI / `MenuBarExtra` app constraints.
-- `scripts/CLAUDE.md`: build, sign, notarize, package conventions.
-- `.github/CLAUDE.md`: CI and release workflow conventions.
+- `app/CLAUDE.md`: SwiftUI menu bar app constraints (AppKit `NSStatusItem`).
+- `scripts/CLAUDE.md`: build, sign, notarize, package conventions (planned).
+- `.github/CLAUDE.md`: CI and release workflow conventions (planned).
 - `docs/CLAUDE.md`: OKF authoring contract for the knowledge bundle.

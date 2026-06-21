@@ -1,16 +1,18 @@
 # apple-container-menu
 
 A native macOS menu bar app that surfaces Apple's `container` CLI status:
-running containers and basic actions, one click away in the menu bar.
+running containers, one click away in the menu bar.
 
 > Status: early skeleton. The SwiftUI menu bar shell exists, but there is no
 > distributable app yet. Container monitoring lands in later issues.
 
 ## What it does
 
-Once built, `apple-container-menu` runs as a `MenuBarExtra` (no Dock icon) and
-shows the state of containers managed by Apple's `container` CLI, with basic
-actions. It targets macOS 13 (Ventura) and later on Apple silicon.
+Once built, `apple-container-menu` runs as a menu bar app (no Dock icon) and
+shows the state of containers managed by Apple's `container` CLI. The first
+release is read-only; mutating actions (start, stop, remove) are deferred (see
+[ADR 001](docs/decisions/001-read-only-scope.md)). It targets macOS 13 (Ventura)
+and later on Apple silicon.
 
 ## How to use
 

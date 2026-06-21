@@ -10,6 +10,11 @@ tags: [scripts, build, constraints]
 
 Build, sign, notarize, and package scripts for distribution.
 
+> Planned, not yet present: `scripts/` currently holds only `format-markdown.sh`.
+> The build / sign / notarize / package chain below is the convention for those
+> scripts when they are written, not a description of existing files (see
+> `docs/decisions/017-context-describes-current-state.md`).
+
 Standing decisions:
 
 - Atomic and composable: one script, one job. No mega-script. Compose them (for
