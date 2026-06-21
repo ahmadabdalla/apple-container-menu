@@ -15,11 +15,16 @@ struct StubContainerBinary {
 
     /// - Parameters:
     ///   - statusExitCode: exit code for `system status` (0 means service up).
+    ///   - statusHangs: when true, `system status` blocks forever instead of
+    ///     exiting, to exercise the subprocess timeout and cancellation paths.
+    ///     It `exec`s the sleep so no orphaned grandchild keeps the pipes open;
+    ///     terminating the child reaches EOF immediately.
     ///   - listJSON: stdout for `ls`, written verbatim.
     ///   - listExitCode: exit code for `ls`.
     ///   - listStderr: stderr for `ls`, for the error-message path.
     init(
         statusExitCode: Int32 = 0,
+        statusHangs: Bool = false,
         listJSON: String = "[]",
         listExitCode: Int32 = 0,
         listStderr: String = ""
@@ -29,6 +34,8 @@ struct StubContainerBinary {
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         url = directory.appendingPathComponent("container")
 
+        let statusBody = statusHangs ? "exec sleep 600" : "exit \(statusExitCode)"
+
         // Dispatch on the first argument, mirroring the two subcommands fetch()
         // calls. Quoted heredocs keep both the JSON payload and the stderr text
         // intact regardless of quotes or shell metacharacters in fixtures.
@@ -36,7 +43,7 @@ struct StubContainerBinary {
         #!/bin/sh
         case "$1" in
         system)
-          exit \(statusExitCode)
+          \(statusBody)
           ;;
         ls)
           cat <<'STUB_JSON_EOF'

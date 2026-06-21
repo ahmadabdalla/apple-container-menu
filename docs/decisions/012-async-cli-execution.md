@@ -29,7 +29,17 @@ then hop to `@MainActor` to update the state (see
 
 - The menu bar stays responsive regardless of CLI latency.
 - Results arrive asynchronously, which is why the cache exists.
+- A wedged child that never exits or never closes its pipes is bounded: each
+  `container` invocation has a per-command timeout (terminate, then SIGKILL after
+  a short grace), and a superseded refresh cancels and terminates the in-flight
+  `Process`. A timeout maps to `.error` (see [005](005-six-state-model.md)).
 
 ## Alternatives / deferred
 
 - Blocking the main thread: rejected; beachball risk.
+- A store-level timeout that just cancels `fetch()`: rejected; cancelling drops
+  the result but does not kill the child, so wedged processes and pipe readers
+  pile up. The timeout lives in the CLI so it terminates the `Process`.
+- Per-fetch timeout instead of per-command: not taken; per-command is simpler and
+  the seam is per command. Tradeoff: a fully wedged two-command fetch can take up
+  to two timeouts.

@@ -22,6 +22,7 @@
 		8BAA20072E00000100AC0001 /* ContainerLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10072E00000100AC0001 /* ContainerLabelTests.swift */; };
 		8BAA20082E00000100AC0001 /* ContainerCLIFetchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10082E00000100AC0001 /* ContainerCLIFetchTests.swift */; };
 		8BAA20092E00000100AC0001 /* ContainerCLIFunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10092E00000100AC0001 /* ContainerCLIFunctionalTests.swift */; };
+		8BAA200A2E00000100AC0001 /* ContainerCLITimeoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA100A2E00000100AC0001 /* ContainerCLITimeoutTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		8BAA10072E00000100AC0001 /* ContainerLabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerLabelTests.swift; sourceTree = "<group>"; };
 		8BAA10082E00000100AC0001 /* ContainerCLIFetchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerCLIFetchTests.swift; sourceTree = "<group>"; };
 		8BAA10092E00000100AC0001 /* ContainerCLIFunctionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerCLIFunctionalTests.swift; sourceTree = "<group>"; };
+		8BAA100A2E00000100AC0001 /* ContainerCLITimeoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerCLITimeoutTests.swift; sourceTree = "<group>"; };
 		8BAA30002E00000100AC0001 /* AppleContainerMenuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleContainerMenuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -86,6 +88,7 @@
 				8BAA10072E00000100AC0001 /* ContainerLabelTests.swift */,
 				8BAA10082E00000100AC0001 /* ContainerCLIFetchTests.swift */,
 				8BAA10092E00000100AC0001 /* ContainerCLIFunctionalTests.swift */,
+				8BAA100A2E00000100AC0001 /* ContainerCLITimeoutTests.swift */,
 			);
 			path = AppleContainerMenuTests;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				8BAA20072E00000100AC0001 /* ContainerLabelTests.swift in Sources */,
 				8BAA20082E00000100AC0001 /* ContainerCLIFetchTests.swift in Sources */,
 				8BAA20092E00000100AC0001 /* ContainerCLIFunctionalTests.swift in Sources */,
+				8BAA200A2E00000100AC0001 /* ContainerCLITimeoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
