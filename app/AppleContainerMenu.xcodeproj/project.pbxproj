@@ -13,6 +13,15 @@
 		8B77C0452C26A00100AC0001 /* ContainerCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0442C26A00100AC0001 /* ContainerCLI.swift */; };
 		8B77C0472C26A00100AC0001 /* ContainerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0462C26A00100AC0001 /* ContainerStore.swift */; };
 		8B77C0492C26A00100AC0001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C0482C26A00100AC0001 /* AppDelegate.swift */; };
+		8BAA20012E00000100AC0001 /* TestTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10012E00000100AC0001 /* TestTags.swift */; };
+		8BAA20022E00000100AC0001 /* MenuStateMatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10022E00000100AC0001 /* MenuStateMatchers.swift */; };
+		8BAA20032E00000100AC0001 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10032E00000100AC0001 /* Fixtures.swift */; };
+		8BAA20042E00000100AC0001 /* StubContainerBinary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10042E00000100AC0001 /* StubContainerBinary.swift */; };
+		8BAA20052E00000100AC0001 /* FakeCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10052E00000100AC0001 /* FakeCLI.swift */; };
+		8BAA20062E00000100AC0001 /* ContainerDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10062E00000100AC0001 /* ContainerDecodingTests.swift */; };
+		8BAA20072E00000100AC0001 /* ContainerLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10072E00000100AC0001 /* ContainerLabelTests.swift */; };
+		8BAA20082E00000100AC0001 /* ContainerCLIFetchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10082E00000100AC0001 /* ContainerCLIFetchTests.swift */; };
+		8BAA20092E00000100AC0001 /* ContainerCLIFunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA10092E00000100AC0001 /* ContainerCLIFunctionalTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +33,16 @@
 		8B77C0462C26A00100AC0001 /* ContainerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerStore.swift; sourceTree = "<group>"; };
 		8B77C0482C26A00100AC0001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B77C0322C26A00100AC0001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BAA10012E00000100AC0001 /* TestTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTags.swift; sourceTree = "<group>"; };
+		8BAA10022E00000100AC0001 /* MenuStateMatchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStateMatchers.swift; sourceTree = "<group>"; };
+		8BAA10032E00000100AC0001 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		8BAA10042E00000100AC0001 /* StubContainerBinary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubContainerBinary.swift; sourceTree = "<group>"; };
+		8BAA10052E00000100AC0001 /* FakeCLI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCLI.swift; sourceTree = "<group>"; };
+		8BAA10062E00000100AC0001 /* ContainerDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerDecodingTests.swift; sourceTree = "<group>"; };
+		8BAA10072E00000100AC0001 /* ContainerLabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerLabelTests.swift; sourceTree = "<group>"; };
+		8BAA10082E00000100AC0001 /* ContainerCLIFetchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerCLIFetchTests.swift; sourceTree = "<group>"; };
+		8BAA10092E00000100AC0001 /* ContainerCLIFunctionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerCLIFunctionalTests.swift; sourceTree = "<group>"; };
+		8BAA30002E00000100AC0001 /* AppleContainerMenuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleContainerMenuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				8B77C02F2C26A00100AC0001 /* AppleContainerMenu */,
+				8BAA60002E00000100AC0001 /* AppleContainerMenuTests */,
 				8B77C02E2C26A00100AC0001 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,8 +69,25 @@
 			isa = PBXGroup;
 			children = (
 				8B77C02D2C26A00100AC0001 /* AppleContainerMenu.app */,
+				8BAA30002E00000100AC0001 /* AppleContainerMenuTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8BAA60002E00000100AC0001 /* AppleContainerMenuTests */ = {
+			isa = PBXGroup;
+			children = (
+				8BAA10012E00000100AC0001 /* TestTags.swift */,
+				8BAA10022E00000100AC0001 /* MenuStateMatchers.swift */,
+				8BAA10032E00000100AC0001 /* Fixtures.swift */,
+				8BAA10042E00000100AC0001 /* StubContainerBinary.swift */,
+				8BAA10052E00000100AC0001 /* FakeCLI.swift */,
+				8BAA10062E00000100AC0001 /* ContainerDecodingTests.swift */,
+				8BAA10072E00000100AC0001 /* ContainerLabelTests.swift */,
+				8BAA10082E00000100AC0001 /* ContainerCLIFetchTests.swift */,
+				8BAA10092E00000100AC0001 /* ContainerCLIFunctionalTests.swift */,
+			);
+			path = AppleContainerMenuTests;
 			sourceTree = "<group>";
 		};
 		8B77C02F2C26A00100AC0001 /* AppleContainerMenu */ = {
@@ -87,7 +124,41 @@
 			productReference = 8B77C02D2C26A00100AC0001 /* AppleContainerMenu.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8BAA40002E00000100AC0001 /* AppleContainerMenuTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BAAA0002E00000100AC0001 /* Build configuration list for PBXNativeTarget "AppleContainerMenuTests" */;
+			buildPhases = (
+				8BAA50002E00000100AC0001 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8BAA80002E00000100AC0001 /* PBXTargetDependency */,
+			);
+			name = AppleContainerMenuTests;
+			productName = AppleContainerMenuTests;
+			productReference = 8BAA30002E00000100AC0001 /* AppleContainerMenuTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXContainerItemProxy section */
+		8BAA70002E00000100AC0001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B77C0252C26A00100AC0001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B77C02C2C26A00100AC0001;
+			remoteInfo = AppleContainerMenu;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		8BAA80002E00000100AC0001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B77C02C2C26A00100AC0001 /* AppleContainerMenu */;
+			targetProxy = 8BAA70002E00000100AC0001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXProject section */
 		8B77C0252C26A00100AC0001 /* Project object */ = {
@@ -99,6 +170,10 @@
 				TargetAttributes = {
 					8B77C02C2C26A00100AC0001 = {
 						CreatedOnToolsVersion = 26.5;
+					};
+					8BAA40002E00000100AC0001 = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = 8B77C02C2C26A00100AC0001;
 					};
 				};
 			};
@@ -116,6 +191,7 @@
 			projectRoot = "";
 			targets = (
 				8B77C02C2C26A00100AC0001 /* AppleContainerMenu */,
+				8BAA40002E00000100AC0001 /* AppleContainerMenuTests */,
 			);
 		};
 /* End PBXProject section */
@@ -141,6 +217,22 @@
 				8B77C0452C26A00100AC0001 /* ContainerCLI.swift in Sources */,
 				8B77C0472C26A00100AC0001 /* ContainerStore.swift in Sources */,
 				8B77C0492C26A00100AC0001 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BAA50002E00000100AC0001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BAA20012E00000100AC0001 /* TestTags.swift in Sources */,
+				8BAA20022E00000100AC0001 /* MenuStateMatchers.swift in Sources */,
+				8BAA20032E00000100AC0001 /* Fixtures.swift in Sources */,
+				8BAA20042E00000100AC0001 /* StubContainerBinary.swift in Sources */,
+				8BAA20052E00000100AC0001 /* FakeCLI.swift in Sources */,
+				8BAA20062E00000100AC0001 /* ContainerDecodingTests.swift in Sources */,
+				8BAA20072E00000100AC0001 /* ContainerLabelTests.swift in Sources */,
+				8BAA20082E00000100AC0001 /* ContainerCLIFetchTests.swift in Sources */,
+				8BAA20092E00000100AC0001 /* ContainerCLIFunctionalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +405,48 @@
 			};
 			name = Release;
 		};
+		8BAA90012E00000100AC0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ahmadabdalla.apple-container-menu.tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppleContainerMenu.app/Contents/MacOS/AppleContainerMenu";
+			};
+			name = Debug;
+		};
+		8BAA90022E00000100AC0001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ahmadabdalla.apple-container-menu.tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppleContainerMenu.app/Contents/MacOS/AppleContainerMenu";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -330,6 +464,15 @@
 			buildConfigurations = (
 				8B77C0392C26A00100AC0001 /* Debug */,
 				8B77C03A2C26A00100AC0001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8BAAA0002E00000100AC0001 /* Build configuration list for PBXNativeTarget "AppleContainerMenuTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BAA90012E00000100AC0001 /* Debug */,
+				8BAA90022E00000100AC0001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

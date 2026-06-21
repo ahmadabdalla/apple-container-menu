@@ -1,0 +1,118 @@
+import Foundation
+import Testing
+@testable import AppleContainerMenu
+
+@Suite("Container row labels", .tags(.unit))
+struct ContainerLabelTests {
+    struct UptimeCase: Sendable {
+        let interval: TimeInterval
+        let expected: String
+    }
+
+    @Test("Running uptime rolls up to s, m, h, then d", arguments: [
+        UptimeCase(interval: 5, expected: "up 5s"),
+        UptimeCase(interval: 90, expected: "up 1m"),
+        UptimeCase(interval: 7200, expected: "up 2h"),
+        UptimeCase(interval: 172800, expected: "up 2d"),
+    ])
+    func runningUptime(_ testCase: UptimeCase) throws {
+        let container = try runningContainer()
+        let started = try #require(container.startedDate)
+        let now = started.addingTimeInterval(testCase.interval)
+
+        #expect(container.uptimeSummary(now: now) == testCase.expected)
+    }
+
+    @Test("A stopped row has no uptime")
+    func stoppedHasNoUptime() throws {
+        let container = try Fixtures.decodeContainer(
+            Fixtures.containerJSON(state: "stopped", startedDateISO: Fixtures.startedDateISO)
+        )
+
+        #expect(container.uptimeSummary(now: Date.distantFuture) == nil)
+    }
+
+    @Test("A running row with no started date has no uptime")
+    func runningWithoutStartHasNoUptime() throws {
+        let container = try Fixtures.decodeContainer(Fixtures.containerJSON(state: "running"))
+
+        #expect(container.uptimeSummary(now: Date.distantFuture) == nil)
+    }
+
+    struct PortsCase: Sendable {
+        let ports: [PortPair]
+        let expected: String?
+    }
+
+    struct PortPair: Sendable {
+        let hostPort: Int
+        let count: Int
+    }
+
+    @Test("Ports summary shows the first host port and a +N for the rest", arguments: [
+        PortsCase(ports: [], expected: nil),
+        PortsCase(ports: [PortPair(hostPort: 8080, count: 1)], expected: ":8080"),
+        PortsCase(ports: [PortPair(hostPort: 8080, count: 1), PortPair(hostPort: 8443, count: 1)], expected: ":8080 +1"),
+        PortsCase(ports: [PortPair(hostPort: 9000, count: 3)], expected: ":9000 +2"),
+        PortsCase(ports: [PortPair(hostPort: 9000, count: 2), PortPair(hostPort: 9100, count: 1)], expected: ":9000 +2"),
+    ])
+    func portsSummary(_ testCase: PortsCase) throws {
+        let pairs = testCase.ports.map { (hostPort: $0.hostPort, count: $0.count) }
+        let container = try Fixtures.decodeContainer(
+            Fixtures.containerJSON(state: "running", ports: pairs)
+        )
+
+        #expect(container.portsSummary == testCase.expected)
+    }
+
+    @Test("A running row joins state, uptime, and ports")
+    func runningMenuLabel() throws {
+        let container = try Fixtures.decodeContainer(
+            Fixtures.containerJSON(
+                id: "web",
+                state: "running",
+                startedDateISO: Fixtures.startedDateISO,
+                ports: [(hostPort: 8080, count: 1)]
+            )
+        )
+        let started = try #require(container.startedDate)
+        let now = started.addingTimeInterval(7200)
+
+        #expect(container.menuLabel(now: now) == "web  running, up 2h, :8080")
+    }
+
+    @Test("A stopped row drops the uptime clause and ports")
+    func stoppedMenuLabel() throws {
+        let container = try Fixtures.decodeContainer(
+            Fixtures.containerJSON(id: "db", state: "stopped")
+        )
+
+        #expect(container.menuLabel(now: Date.distantFuture) == "db  stopped")
+    }
+
+    @Test("A running row drops uptime but keeps ports when there is no start date")
+    func runningWithoutStartKeepsPorts() throws {
+        let container = try Fixtures.decodeContainer(
+            Fixtures.containerJSON(id: "svc", state: "running", ports: [(hostPort: 8080, count: 1)])
+        )
+
+        #expect(container.menuLabel(now: Date.distantFuture) == "svc  running, :8080")
+    }
+
+    @Test("isRunning is case-insensitive")
+    func runningIsCaseInsensitive() throws {
+        let container = try Fixtures.decodeContainer(
+            Fixtures.containerJSON(state: "RUNNING", startedDateISO: Fixtures.startedDateISO)
+        )
+        let started = try #require(container.startedDate)
+
+        #expect(container.isRunning)
+        #expect(container.uptimeSummary(now: started.addingTimeInterval(5)) == "up 5s")
+    }
+
+    private func runningContainer() throws -> Container {
+        try Fixtures.decodeContainer(
+            Fixtures.containerJSON(state: "running", startedDateISO: Fixtures.startedDateISO)
+        )
+    }
+}
