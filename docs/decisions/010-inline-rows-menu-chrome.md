@@ -22,8 +22,11 @@ Refresh and Quit.
 
 ## How
 
-A row reads roughly `name  state, up Xh, :port`. Many ports are truncated (for
-example `:3001 +2`). The five non-populated states (see
+A running row reads roughly `name  state, up Xh, :port`; a stopped row drops the
+uptime clause (`name  stopped`, ports appended when published). `name` is the
+container `id` and `image` is decoded but not shown inline (see
+[007](007-container-data-model.md)). Many ports are truncated (for example
+`:3001 +2`). The five non-populated states (see
 [005](005-six-state-model.md)) replace the list with a single explanatory item,
 keeping Refresh and Quit below. Refresh forces a re-fetch (it is the escape hatch
 for cache staleness, see [009](009-last-known-cache.md)). Quit is required

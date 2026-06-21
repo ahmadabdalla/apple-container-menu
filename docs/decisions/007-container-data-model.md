@@ -18,22 +18,26 @@ mounts, env, resources, image descriptor; see
 
 ## Decision
 
-Decode and surface five fields per container: `id`, `state` (`status.state`),
-`image` (`configuration.image.reference`), `startedDate` (`status.startedDate`),
-and `publishedPorts` (`configuration.publishedPorts`). Show all containers,
+Decode five fields per container: `id`, `state` (`status.state`), `image`
+(`configuration.image.reference`), `startedDate` (`status.startedDate`), and
+`publishedPorts` (`configuration.publishedPorts`). Show all containers,
 including infrastructure ones (for example `buildkit`).
 
 ## How
 
 The `Decodable` struct models only these five and ignores everything else, so the
-JSON can grow without breaking. `startedDate` renders as relative uptime;
-`publishedPorts` renders only when non-empty. Infrastructure containers are
-identifiable by the label `com.apple.container.resource.role` but are not
+JSON can grow without breaking. The row renders `id` as the display name (the CLI
+`id` is the container name; there is no separate name field), `state`, relative
+uptime from `startedDate` for running containers only (a stopped container shows
+no uptime), and `publishedPorts` when non-empty. `image` is decoded but not shown
+in the MVP row; it is reserved for a later detail view. Infrastructure containers
+are identifiable by the label `com.apple.container.resource.role` but are not
 filtered in the MVP.
 
 ## Consequences
 
-- The row answers "what, alive, since when, on which ports" without crowding.
+- The row answers "which one, alive, since when, on which ports" without
+  crowding; `image` is held back to keep the line short.
 - More fields later means more CodingKeys, not a restructure.
 - The user's own list shows infrastructure containers (noisier), accepted for
   now.
