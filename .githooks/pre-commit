@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Normalize staged markdown before the commit lands.
 # Runs the formatter in --write mode on staged .md, then re-stages.
-# No-ops when no markdown is staged. See Scripts/CLAUDE.md.
+# No-ops when no markdown is staged. See scripts/CLAUDE.md.
 set -euo pipefail
 
 repo_root=$(git rev-parse --show-toplevel)
@@ -14,7 +14,7 @@ done < <(git diff --cached --name-only --diff-filter=ACMR -- '*.md')
 
 [ ${#staged[@]} -gt 0 ] || exit 0
 
-"$repo_root/Scripts/format-markdown.sh" --write "${staged[@]}"
+"$repo_root/scripts/format-markdown.sh" --write "${staged[@]}"
 
 # Re-stage whatever the formatter touched so the commit captures it.
 # Caveat: a file with both staged and unstaged changes gets fully staged here.

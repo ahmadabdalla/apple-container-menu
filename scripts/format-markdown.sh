@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Normalize markdown whitespace only: trailing whitespace, blank-line runs, final
 # newline. No reflow, no bullet-marker changes. Idempotent. Enforced by
-# .githooks/pre-commit; see Scripts/CLAUDE.md.
+# .githooks/pre-commit; see scripts/CLAUDE.md.
 set -euo pipefail
 
 # -0777 slurps the file so the final-newline rule sees end-of-file.

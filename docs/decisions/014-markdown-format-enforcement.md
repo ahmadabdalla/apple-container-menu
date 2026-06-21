@@ -26,7 +26,7 @@ Claude Code editor hook.
 
 ## How
 
-- `Scripts/format-markdown.sh (--check|--write) <paths>` applies the whitespace
+- `scripts/format-markdown.sh (--check|--write) <paths>` applies the whitespace
   rules: strip trailing whitespace, collapse 3+ newlines to one blank line, end
   with exactly one newline. It is idempotent and touches whitespace only (no
   reflow, no bullet-marker changes).
