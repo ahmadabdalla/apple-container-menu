@@ -9,10 +9,22 @@ struct ContainerCLI {
         "/usr/local/bin/container",
     ]
 
+    /// Per-command wall-clock budget (ADR 012, additive). A wedged `container`
+    /// invocation that never exits or never closes its pipes is terminated after
+    /// this, so a refresh cannot block indefinitely. Typical fetch is ~33ms, so
+    /// this only fires on a genuine hang.
+    static let commandTimeout: Duration = .seconds(5)
+
     /// Resolves the `container` binary, or nil for the CLI-not-found state.
     typealias BinaryResolver = @Sendable () -> URL?
     /// Runs a resolved binary and returns its captured result.
     typealias ProcessRunner = @Sendable (URL, [String]) async throws -> ProcessResult
+
+    /// A `container` invocation that exceeded `commandTimeout`. Mapped in
+    /// `fetch()` to `.error` (ADR 005) with a user-facing message.
+    struct TimeoutError: LocalizedError {
+        var errorDescription: String? { "container command timed out" }
+    }
 
     /// The two seams `fetch()` runs through. Production wires the live
     /// `FileManager` scan and `Process` + `Pipe` flow; tests inject fakes (unit)
@@ -76,8 +88,15 @@ struct ContainerCLI {
     /// Run a binary and capture stdout and stderr. Both pipes are drained
     /// concurrently on detached tasks: reading only one risks a deadlock if the
     /// child fills the other pipe's buffer and blocks. The main thread never
-    /// blocks (ADR 012).
+    /// blocks (ADR 012). A wedged child is bounded by `commandTimeout`.
     @Sendable private static func defaultRun(_ url: URL, _ arguments: [String]) async throws -> ProcessResult {
+        try await liveRun(url, arguments, timeout: commandTimeout)
+    }
+
+    /// The live `Process` + `Pipe` pipeline with an explicit timeout. Exposed
+    /// (internal) so functional tests can drive a hanging stub with a short
+    /// budget instead of waiting `commandTimeout`.
+    static func liveRun(_ url: URL, _ arguments: [String], timeout: Duration) async throws -> ProcessResult {
         let process = Process()
         process.executableURL = url
         process.arguments = arguments
@@ -90,12 +109,82 @@ struct ContainerCLI {
 
         async let stdoutData = Self.readToEnd(stdoutPipe)
         async let stderrData = Self.readToEnd(stderrPipe)
+
+        // Race process exit against the deadline and cooperative cancellation.
+        // On either, the child is terminated, which closes its pipe write ends
+        // so both readers reach EOF; the drain below then returns promptly.
+        //
+        // Boundary: this bounds a wedged *single* process. The two commands run
+        // here (`system status`, `ls`) are short-lived CLI clients that do not
+        // fork a backgrounded child inheriting these pipes (the daemon is
+        // launchd-managed, not spawned by us), so terminating the child reliably
+        // reaches EOF. A hypothetical orphaned grandchild holding a write end
+        // could delay this drain, but it runs off-main, so the menu still
+        // renders the last-known cache (ADR 009) and never blocks.
+        let outcome = await Self.waitForExit(process, timeout: timeout)
         let (out, err) = await (stdoutData, stderrData)
 
-        // Both pipes are at EOF, so the child has closed its write ends; this
-        // returns promptly and yields a valid termination status.
-        process.waitUntilExit()
-        return ProcessResult(terminationStatus: process.terminationStatus, stdout: out, stderr: err)
+        switch outcome {
+        case .exited:
+            return ProcessResult(terminationStatus: process.terminationStatus, stdout: out, stderr: err)
+        case .timedOut:
+            throw TimeoutError()
+        case .cancelled:
+            throw CancellationError()
+        }
+    }
+
+    private enum ExitOutcome: Sendable {
+        case exited
+        case timedOut
+        case cancelled
+    }
+
+    /// Wait for the child to exit, the deadline to pass, or this task to be
+    /// cancelled, whichever comes first. On the latter two the child is
+    /// terminated so the blocking exit wait and both pipe readers unblock; the
+    /// returned outcome never resolves until the child is actually gone.
+    private static func waitForExit(_ process: Process, timeout: Duration) async -> ExitOutcome {
+        // Detached so a blocking `waitUntilExit()` never ties up a cooperative
+        // pool thread; it returns once the child dies (naturally or terminated).
+        let exited = Task.detached(priority: .utility) { process.waitUntilExit() }
+
+        return await withTaskGroup(of: ExitOutcome.self) { group in
+            group.addTask {
+                await exited.value
+                return .exited
+            }
+            group.addTask {
+                // Cancellation (a superseded refresh) surfaces as a throw here.
+                do {
+                    try await Task.sleep(for: timeout)
+                    return .timedOut
+                } catch {
+                    return .cancelled
+                }
+            }
+
+            let first = await group.next() ?? .exited
+            if first != .exited {
+                Self.terminate(process)
+            }
+            group.cancelAll()
+            return first
+        }
+    }
+
+    /// Stop a runaway child: SIGTERM first, then SIGKILL after a short grace if
+    /// it ignores the polite signal, so a child that traps SIGTERM still cannot
+    /// hang the caller.
+    private static func terminate(_ process: Process) {
+        guard process.isRunning else { return }
+        process.terminate()
+        Task.detached(priority: .utility) {
+            try? await Task.sleep(for: .milliseconds(500))
+            if process.isRunning {
+                kill(process.processIdentifier, SIGKILL)
+            }
+        }
     }
 
     private static func readToEnd(_ pipe: Pipe) async -> Data {
