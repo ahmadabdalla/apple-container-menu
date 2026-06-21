@@ -18,5 +18,5 @@ Standing decisions:
 - UI is a `MenuBarExtra` scene with `LSUIElement` set (no Dock icon).
 - Target macOS 13 (Ventura) and later, Apple silicon.
 
-Build, signing, and CI concerns do not belong here; see `Scripts/CLAUDE.md` and
+Build, signing, and CI concerns do not belong here; see `scripts/CLAUDE.md` and
 `.github/CLAUDE.md`.

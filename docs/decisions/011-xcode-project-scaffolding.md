@@ -24,7 +24,7 @@ Use a raw Xcode project.
 
 Xcode owns the bundle, `Info.plist`, asset-catalog icon, signing, and
 notarization, driven from composable scripts via `xcodebuild` (see
-`Scripts/CLAUDE.md`). Only the project configuration is opaque; the build, sign,
+`scripts/CLAUDE.md`). Only the project configuration is opaque; the build, sign,
 and notarize pipeline stays scriptable.
 
 ## Consequences
