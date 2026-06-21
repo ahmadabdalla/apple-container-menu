@@ -33,7 +33,7 @@ whose delegate triggers the refresh. `menuWillOpen` renders the last-known cache
 synchronously, then kicks the async fetch (see
 [12](012-async-cli-execution.md)). The result cannot re-render the open menu (the
 runloop is blocked), so it lands in the cache and surfaces on the next open: the
-one-open-stale, self-correcting behaviour [9](009-last-known-cache.md) already
+one-open-stale, self-correcting behavior [9](009-last-known-cache.md) already
 describes. The six-state model (see [5](005-six-state-model.md)) maps to native
 single-line items with Refresh and Quit fixed below (see
 [10](010-inline-rows-menu-chrome.md)). The `App` scene becomes an empty `Settings`
