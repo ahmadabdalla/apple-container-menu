@@ -18,6 +18,7 @@ alternatives. Read one when your task touches its area.
 * [012 Async CLI execution](012-async-cli-execution.md) - Run the CLI off the main thread with async/await.
 * [013 Adopt Open Knowledge Format](013-okf-knowledge-format.md) - docs/ becomes an OKF v0.1 bundle and the CLAUDE.md files become nodes.
 * [014 Enforce markdown formatting with a pre-commit hook](014-markdown-format-enforcement.md) - One script normalizes whitespace; a git pre-commit hook fixes and re-stages it.
+* [016 Swift Testing for the test target](016-swift-testing-framework.md) - Add a Swift Testing unit-test target with a unit/functional two-tier strategy over an injected CLI seam.
 
 ## Scope
 

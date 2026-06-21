@@ -9,9 +9,29 @@ struct ContainerCLI {
         "/usr/local/bin/container",
     ]
 
+    /// Resolves the `container` binary, or nil for the CLI-not-found state.
+    typealias BinaryResolver = @Sendable () -> URL?
+    /// Runs a resolved binary and returns its captured result.
+    typealias ProcessRunner = @Sendable (URL, [String]) async throws -> ProcessResult
+
+    /// The two seams `fetch()` runs through. Production wires the live
+    /// `FileManager` scan and `Process` + `Pipe` flow; tests inject fakes (unit)
+    /// or a stub binary resolver over the real runner (functional). Both are
+    /// defaulted so `ContainerCLI()` call sites are unchanged.
+    private let resolveBinary: BinaryResolver
+    private let run: ProcessRunner
+
+    init(
+        resolveBinary: @escaping BinaryResolver = ContainerCLI.defaultResolveBinary,
+        run: @escaping ProcessRunner = ContainerCLI.defaultRun
+    ) {
+        self.resolveBinary = resolveBinary
+        self.run = run
+    }
+
     /// First candidate path that exists, or nil for the CLI-not-found state.
-    func resolveBinary() -> URL? {
-        for path in Self.candidatePaths where FileManager.default.fileExists(atPath: path) {
+    @Sendable static func defaultResolveBinary() -> URL? {
+        for path in candidatePaths where FileManager.default.fileExists(atPath: path) {
             return URL(fileURLWithPath: path)
         }
         return nil
@@ -47,7 +67,7 @@ struct ContainerCLI {
         }
     }
 
-    private struct ProcessResult {
+    struct ProcessResult: Sendable {
         let terminationStatus: Int32
         let stdout: Data
         let stderr: Data
@@ -57,7 +77,7 @@ struct ContainerCLI {
     /// concurrently on detached tasks: reading only one risks a deadlock if the
     /// child fills the other pipe's buffer and blocks. The main thread never
     /// blocks (ADR 012).
-    private func run(_ url: URL, _ arguments: [String]) async throws -> ProcessResult {
+    @Sendable private static func defaultRun(_ url: URL, _ arguments: [String]) async throws -> ProcessResult {
         let process = Process()
         process.executableURL = url
         process.arguments = arguments
