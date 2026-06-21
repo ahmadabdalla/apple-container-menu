@@ -10,6 +10,11 @@ tags: [ci, release, constraints]
 
 GitHub Actions workflows and release automation.
 
+> Planned, not yet present: there is no `.github/workflows/` yet. These are the
+> conventions CI and release automation will follow when they land, not a
+> description of existing workflows (see
+> `docs/decisions/017-context-describes-current-state.md`).
+
 Standing decisions:
 
 - Every issue uses the task template and carries self-contained context (what,

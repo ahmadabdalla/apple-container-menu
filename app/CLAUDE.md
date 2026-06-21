@@ -1,7 +1,7 @@
 ---
 type: Instruction
 title: App constraints
-description: SwiftUI MenuBarExtra app constraints: unsandboxed, LSUIElement, macOS 13+ Apple silicon.
+description: SwiftUI menu bar app constraints (AppKit NSStatusItem): unsandboxed, LSUIElement, macOS 13+ Apple silicon.
 timestamp: 2026-06-21
 tags: [app, swiftui, constraints]
 ---

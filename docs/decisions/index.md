@@ -18,6 +18,9 @@ alternatives. Read one when your task touches its area.
 * [012 Async CLI execution](012-async-cli-execution.md) - Run the CLI off the main thread with async/await.
 * [013 Adopt Open Knowledge Format](013-okf-knowledge-format.md) - docs/ becomes an OKF v0.1 bundle and the CLAUDE.md files become nodes.
 * [014 Enforce markdown formatting with a pre-commit hook](014-markdown-format-enforcement.md) - One script normalizes whitespace; a git pre-commit hook fixes and re-stages it.
+* [015 AppKit status item open trigger](015-appkit-status-item-open-trigger.md) - Render the menu from an AppKit NSStatusItem so menuWillOpen can trigger the fetch on open.
+* [016 Swift Testing for the test target](016-swift-testing-framework.md) - Use Swift Testing for the unit and functional test target over an injected CLI seam.
+* [017 Context files describe current state](017-context-describes-current-state.md) - Context files describe what exists today; planned-but-absent artifacts carry an explicit marker.
 * [015 AppKit status item open trigger](015-appkit-status-item-open-trigger.md) - Render the menu from an AppKit NSStatusItem so menuWillOpen fetches on open; supersedes 008.
 * [016 Swift Testing for the test target](016-swift-testing-framework.md) - Add a Swift Testing unit-test target with a unit/functional two-tier strategy over an injected CLI seam.
 
