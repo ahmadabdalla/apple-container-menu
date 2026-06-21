@@ -27,3 +27,7 @@ Standing decisions:
   `.githooks/pre-commit` hook, which fixes and re-stages staged `.md`. A new clone
   runs `git config core.hooksPath .githooks` once. See
   `docs/decisions/014-markdown-format-enforcement.md`.
+- `check-ready.sh` validates an issue's Provenance manifest; `ready.sh` mints the
+  human readiness marker. The agent cannot run `ready.sh`; a human does. This is
+  the Definition of Ready gate; see
+  `docs/decisions/017-definition-of-ready-gate.md`.

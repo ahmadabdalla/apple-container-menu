@@ -13,7 +13,9 @@ GitHub Actions workflows and release automation.
 Standing decisions:
 
 - Every issue uses the task template and carries self-contained context (what,
-  why, constraints, acceptance criteria). Blank issues are disabled.
+  why, provenance, constraints, acceptance criteria). Blank issues are disabled.
+  The Provenance manifest gates app code via the Definition of Ready gate; see
+  `docs/decisions/017-definition-of-ready-gate.md`.
 - Never commit signing identities, notarization credentials, or tokens; use
   encrypted Actions secrets.
 - Releases attach a signed, notarized `.dmg`; the `gh release create` step is
