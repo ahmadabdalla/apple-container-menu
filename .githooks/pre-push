@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Detective control for the Definition of Ready gate.
+# When a push carries app/ changes, re-validate the issue manifest, verify the
+# human marker still matches it, then run the test suite. Fails closed.
+# Caveats: --no-verify skips this (push is the floor, not a wall); needs gh plus
+# network to re-read the manifest.
+# See docs/decisions/017-definition-of-ready-gate.md.
+set -euo pipefail
+
+repo_root=$(git rev-parse --show-toplevel)
+zero="0000000000000000000000000000000000000000"
+
+# Collect changed files across the ref updates being pushed (stdin lines:
+# <local ref> <local sha> <remote ref> <remote sha>).
+changed=""
+while read -r _local_ref local_sha _remote_ref remote_sha; do
+  [ -n "${local_sha:-}" ] || continue
+  [ "$local_sha" = "$zero" ] && continue   # branch deletion
+  if [ "$remote_sha" = "$zero" ]; then
+    # New branch: diff the commit range since it forked from main. If main is
+    # absent (single-branch clone, unrelated history), fail closed rather than
+    # let a bare-sha diff fall back to a worktree compare and skip the gate.
+    base=$(git merge-base main "$local_sha" 2>/dev/null || echo "")
+    if [ -z "$base" ]; then
+      echo "pre-push: cannot establish a merge-base with main for $local_sha; refusing to push (the gate cannot be scoped)." >&2
+      exit 1
+    fi
+    range="$base..$local_sha"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+  changed+=$(git diff --name-only "$range" 2>/dev/null || true)
+  changed+=$'\n'
+done
+
+# Gate only when app/ code is in the push, symmetric with the PreToolUse guard.
+if ! printf '%s' "$changed" | grep -q '^app/'; then
+  exit 0
+fi
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [[ $branch =~ ^issue-([0-9]+)- ]]; then
+  issue=${BASH_REMATCH[1]}
+else
+  echo "pre-push: app/ changes on non-issue branch '$branch'; Definition of Ready cannot be verified." >&2
+  exit 1
+fi
+
+hash=$("$repo_root/scripts/check-ready.sh" "$issue")
+
+marker="$repo_root/.claude/ready/$issue.ok"
+if [ ! -f "$marker" ]; then
+  echo "pre-push: no readiness marker for issue #$issue. A human runs scripts/ready.sh $issue." >&2
+  exit 1
+fi
+if [ "$(cat "$marker")" != "$hash" ]; then
+  echo "pre-push: stale marker for issue #$issue (manifest changed since blessing). Re-run scripts/ready.sh $issue." >&2
+  exit 1
+fi
+
+echo "pre-push: manifest resolved and marker fresh; running test suite..." >&2
+xcodebuild -project "$repo_root/app/AppleContainerMenu.xcodeproj" -scheme AppleContainerMenu test \
+  || { echo "pre-push: test suite failed; push refused." >&2; exit 1; }
