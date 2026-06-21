@@ -3,3 +3,6 @@ build/
 xcuserdata/
 *.xcuserdatad/
 *.xcuserstate
+
+# Local human readiness markers (Definition of Ready gate); never repo state.
+.claude/ready/
