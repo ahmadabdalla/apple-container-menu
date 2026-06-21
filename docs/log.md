@@ -1,5 +1,9 @@
 # Log
 
+## 2026-06-22
+
+* **Creation**: Added reference/container-state-values.md; verified by experiment that container ls status.state is binary (running or stopped) with no transient lifecycle states.
+
 ## 2026-06-21
 
 * **Creation**: Added reference/swiftui-menubarextra.md for MenuBarExtra macOS 13 API availability and minimal syntax.
