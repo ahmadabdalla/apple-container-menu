@@ -54,6 +54,9 @@ scene; the status item is the entire UI.
   as unreliable for `.menu`, and its open signal is a KVO handler the blocked
   runloop defers until the menu closes, so it would fire on close, not open, and
   add the first third-party dependency.
-- Blocking fetch in `menuWillOpen` for fresh-in-one-open: deferred; it freezes the
-  menu bar and risks a beachball (see [12](012-async-cli-execution.md)); revisit
-  once the CLI subprocess has a timeout (issue #14).
+- Blocking fetch in `menuWillOpen` for fresh-in-one-open: deferred; an unbounded
+  block freezes the menu bar and risks a beachball (see
+  [12](012-async-cli-execution.md)). The two CLI calls measured about 33ms
+  combined on the test machine (`system status` plus `ls --all --format json`), so
+  a short bounded block would be imperceptible in the common case. Revisit once the
+  CLI subprocess has a timeout to cap the worst case (issue #14).
