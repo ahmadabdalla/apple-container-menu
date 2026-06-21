@@ -103,3 +103,15 @@ struct PublishedPort: Decodable {
         count = try container.decodeIfPresent(Int.self, forKey: .count) ?? 1
     }
 }
+
+/// Wraps a `Container` so a single malformed row in the `ls` array decodes to
+/// `nil` instead of throwing and failing the whole list. The caller drops the
+/// nil rows, so one bad entry degrades to a missing row rather than a blank
+/// menu (ADR 007).
+struct LossyContainer: Decodable {
+    let value: Container?
+
+    init(from decoder: Decoder) throws {
+        value = try? Container(from: decoder)
+    }
+}

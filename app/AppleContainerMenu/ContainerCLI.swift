@@ -33,8 +33,15 @@ struct ContainerCLI {
 
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
-            let containers = try decoder.decode([Container].self, from: list.stdout)
-            return containers.isEmpty ? .empty : .populated(containers)
+            // Decode leniently so one malformed row degrades to a dropped row,
+            // not a blank menu (ADR 007). A non-array payload still throws into
+            // the error state below; a non-empty list that parses to nothing is
+            // a real failure, not "no containers".
+            let rows = try decoder.decode([LossyContainer].self, from: list.stdout)
+            let containers = rows.compactMap(\.value)
+            if rows.isEmpty { return .empty }
+            if containers.isEmpty { return .error("could not parse container list") }
+            return .populated(containers)
         } catch {
             return .error(error.localizedDescription)
         }
