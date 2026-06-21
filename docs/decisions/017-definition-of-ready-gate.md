@@ -61,8 +61,10 @@ Two layers enforce the gate, both scoped to `app/**`:
 - Preventative: a Claude Code `PreToolUse` hook, `.claude/hooks/dor-guard.sh`,
   blocks an `Edit`/`Write` under `app/` unless a marker for the active issue
   exists, blocks any write under `.claude/ready/`, and blocks an agent `Bash`
-  call that invokes `ready.sh`. Reads are never blocked. This is the fast-fail
-  Claude Code layer, not the universal floor.
+  call that mints or names the marker dir. The `Read` tool is never blocked; a
+  Bash command that references the marker dir is blocked even when it only reads,
+  since that is the fabrication surface. This is the fast-fail Claude Code layer,
+  not the universal floor.
 - Detective: the `.githooks/pre-push` hook re-runs `check-ready.sh`, verifies the
   marker hash matches, and runs the test suite, but only when the pushed commits
   touch `app/**`. This is the tool-agnostic floor; it catches a stale marker, a

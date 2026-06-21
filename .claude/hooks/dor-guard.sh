@@ -1,17 +1,28 @@
 #!/usr/bin/env bash
 # Claude Code PreToolUse guard for the Definition of Ready gate.
 # Blocks (exit 2): an agent app/ write without a fresh marker; any write under
-# .claude/ready/; an agent Bash call that mints the marker. Reads are never
-# blocked. This is the fast-fail Claude Code layer; the push hook is the floor.
+# .claude/ready/; an agent Bash call that mints or names the marker dir. The Read
+# tool is never blocked; a Bash command that references the marker dir is blocked
+# even when it only reads. Fast-fail Claude Code layer; pre-push is the floor.
 # See docs/decisions/017-definition-of-ready-gate.md.
 set -euo pipefail
 
+# Fixed system interpreter, not PATH: a security control must not let a venv or a
+# hijacked PATH pick its parser. /usr/bin/python3 ships with the macOS CLT this
+# project already requires. A missing interpreter fails closed.
+py=/usr/bin/python3
+[ -x "$py" ] || { echo "dor-guard: $py is missing; refusing the action." >&2; exit 2; }
+
 input=$(cat)
 
-tool=$(printf '%s' "$input" | /usr/bin/python3 -c 'import sys,json; print(json.load(sys.stdin).get("tool_name",""))')
+# An unparseable payload means we cannot decide, so fail closed rather than allow.
+tool=$(printf '%s' "$input" | "$py" -c 'import sys,json; print(json.load(sys.stdin).get("tool_name",""))') || {
+  echo "dor-guard: cannot parse the hook payload; refusing the action." >&2
+  exit 2
+}
 
 field() {
-  printf '%s' "$input" | /usr/bin/python3 -c \
+  printf '%s' "$input" | "$py" -c \
     "import sys,json; d=json.load(sys.stdin).get('tool_input',{}) or {}; print(d.get('$1',''))"
 }
 
@@ -52,7 +63,7 @@ case "$tool" in
     # Classify on the resolved real path, not the raw string, so ./, .., and a
     # case-insensitive volume cannot dodge the app/ and marker checks. Any
     # classify failure blocks (fail closed).
-    klass=$(REPO="$repo_root" TARGET="$path" /usr/bin/python3 - <<'PY'
+    klass=$(REPO="$repo_root" TARGET="$path" "$py" - <<'PY'
 import os
 repo = os.path.realpath(os.environ["REPO"])
 p = os.environ["TARGET"]
