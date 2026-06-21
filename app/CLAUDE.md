@@ -15,7 +15,9 @@ Standing decisions:
 - Unsandboxed by design. The app shells out to the `container` CLI via
   `Process()`; the App Sandbox would block that. The sandbox is only required
   for Mac App Store distribution, which is a non-goal.
-- UI is a `MenuBarExtra` scene with `LSUIElement` set (no Dock icon).
+- UI is a `MenuBarExtra` scene with `LSUIElement` set (no Dock icon). API
+  availability and minimal syntax are in
+  [docs/reference/swiftui-menubarextra.md](../docs/reference/swiftui-menubarextra.md).
 - Target macOS 13 (Ventura) and later, Apple silicon.
 
 Build, signing, and CI concerns do not belong here; see `scripts/CLAUDE.md` and
