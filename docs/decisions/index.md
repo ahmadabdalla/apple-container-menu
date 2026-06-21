@@ -20,6 +20,7 @@ alternatives. Read one when your task touches its area.
 * [014 Enforce markdown formatting with a pre-commit hook](014-markdown-format-enforcement.md) - One script normalizes whitespace; a git pre-commit hook fixes and re-stages it.
 * [015 AppKit status item open trigger](015-appkit-status-item-open-trigger.md) - Render the menu from an AppKit NSStatusItem so menuWillOpen fetches on open; supersedes 008.
 * [016 Swift Testing for the test target](016-swift-testing-framework.md) - Add a Swift Testing unit-test target with a unit/functional two-tier strategy over an injected CLI seam.
+* [017 Definition of Ready provenance gate](017-definition-of-ready-gate.md) - Fail-closed controls block app code until a human mints a marker for the issue's resolved provenance manifest.
 
 ## Scope
 
