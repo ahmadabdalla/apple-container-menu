@@ -2,10 +2,11 @@ import Foundation
 
 /// Holds the last-known fetch result and refreshes it asynchronously (ADRs 009,
 /// 012). The menu always has something to render synchronously; the UI never
-/// blocks on the CLI.
+/// blocks on the CLI. The AppKit menu reads `state` on open (ADR 015), so no
+/// SwiftUI binding is needed.
 @MainActor
-final class ContainerStore: ObservableObject {
-    @Published private(set) var state: MenuState = .loading
+final class ContainerStore {
+    private(set) var state: MenuState = .loading
 
     private let cli = ContainerCLI()
     private var currentRefresh: Task<Void, Never>?
@@ -23,6 +24,9 @@ final class ContainerStore: ObservableObject {
         currentRefresh?.cancel()
         currentRefresh = Task { [weak self] in
             guard let self else { return }
+            // A refresh cancelled before it starts should not spawn the CLI;
+            // every menu open triggers one, so cancellations are common.
+            if Task.isCancelled { return }
             let newState = await self.cli.fetch()
             if Task.isCancelled { return }
             self.state = newState

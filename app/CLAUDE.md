@@ -15,9 +15,12 @@ Standing decisions:
 - Unsandboxed by design. The app shells out to the `container` CLI via
   `Process()`; the App Sandbox would block that. The sandbox is only required
   for Mac App Store distribution, which is a non-goal.
-- UI is a `MenuBarExtra` scene with `LSUIElement` set (no Dock icon). API
-  availability and minimal syntax are in
-  [docs/reference/swiftui-menubarextra.md](../docs/reference/swiftui-menubarextra.md).
+- UI is an AppKit `NSStatusItem` with an `NSMenu`, driven by an
+  `NSApplicationDelegateAdaptor`, with `LSUIElement` set (no Dock icon). The
+  `MenuBarExtra` `.menu` style was dropped because it has no menu-open hook; the
+  `menuWillOpen` delegate drives the fetch on open (see
+  [decision 015](../docs/decisions/015-appkit-status-item-open-trigger.md) and
+  [docs/reference/nsstatusitem-menu-open.md](../docs/reference/nsstatusitem-menu-open.md)).
 - Target macOS 13 (Ventura) and later, Apple silicon.
 
 Implementation patterns (footguns worth stating, detail in the ADRs):

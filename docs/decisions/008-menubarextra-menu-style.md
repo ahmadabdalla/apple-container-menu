@@ -4,10 +4,15 @@ title: MenuBarExtra .menu style
 description: Use the native .menu style rather than .window, accepting reduced visual expressiveness.
 timestamp: 2026-06-21
 tags: [ui, menubarextra, swiftui]
-status: Accepted
+status: Superseded
 ---
 
 # 8. MenuBarExtra .menu style
+
+Superseded by [015](015-appkit-status-item-open-trigger.md): the `.menu` style has
+no menu-open hook, so the menu now renders from an AppKit `NSStatusItem` whose
+`menuWillOpen` triggers the fetch on open. The reasoning below is kept as a
+record; it no longer describes the shipped UI.
 
 ## Context
 

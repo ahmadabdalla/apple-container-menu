@@ -9,6 +9,12 @@ resource: https://developer.apple.com/documentation/swiftui/menubarextra
 
 # SwiftUI MenuBarExtra API
 
+The app no longer uses `MenuBarExtra`: the `.menu` style has no menu-open hook, so
+the menu now renders from an AppKit `NSStatusItem` (see
+[nsstatusitem-menu-open](nsstatusitem-menu-open.md) and
+[decision 015](../decisions/015-appkit-status-item-open-trigger.md)). The API facts
+below are kept for reference.
+
 `MenuBarExtra` creates a menu bar extra scene for macOS apps. A minimal app
 scene can use the system-image initializer to display an SF Symbol in the menu
 bar:
