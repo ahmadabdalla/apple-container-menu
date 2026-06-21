@@ -12,7 +12,8 @@ struct ContainerDecodingTests {
         #expect(container.state == "running")
         #expect(container.image == "docker.io/library/nginx:latest")
         let started = try #require(container.startedDate)
-        #expect(started == ISO8601DateFormatter().date(from: Fixtures.startedDateISO))
+        let expectedStart = try #require(ISO8601DateFormatter().date(from: Fixtures.startedDateISO))
+        #expect(started == expectedStart)
         #expect(container.publishedPorts.count == 2)
         #expect(container.publishedPorts.first?.hostPort == 8080)
     }
