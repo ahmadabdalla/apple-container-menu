@@ -2,6 +2,12 @@
 
 ## 2026-06-22
 
+* **Decision**: Added a leading status glyph to the menu rows (issue #25).
+  Running rows show a filled green dot, non-running rows a filled red dot, via
+  NSMenuItem.image; row text is unchanged. Extends 010-inline-rows-menu-chrome.md.
+* **Creation**: Added reference/disabled-menu-item-images.md; verified that
+  non-template palette SF Symbol images remain readable on disabled menu rows in
+  light and dark appearance.
 * **Creation**: Added reference/container-state-values.md; verified by experiment that container ls status.state is binary (running or stopped) with no transient lifecycle states.
 
 ## 2026-06-21
