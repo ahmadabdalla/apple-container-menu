@@ -52,7 +52,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         case .populated(let containers):
             let now = Date()
             for container in containers {
-                menu.addItem(infoItem(container.menuLabel(now: now)))
+                let item = infoItem(container.menuLabel(now: now))
+                item.image = statusImage(for: container)
+                menu.addItem(item)
             }
         }
 
@@ -79,6 +81,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
         item.isEnabled = false
         return item
+    }
+
+    private func statusImage(for container: Container) -> NSImage? {
+        let symbolName = "circle.fill"
+        let color: NSColor = container.isRunning ? .systemGreen : .systemRed
+        let configuration = NSImage.SymbolConfiguration(pointSize: 9, weight: .semibold)
+            .applying(NSImage.SymbolConfiguration(paletteColors: [color]))
+        let image = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)?
+            .withSymbolConfiguration(configuration)
+        image?.isTemplate = false
+        return image
     }
 
     @objc private func refreshClicked() {

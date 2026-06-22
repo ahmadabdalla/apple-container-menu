@@ -35,6 +35,10 @@ because an `LSUIElement` app has no Dock icon.
 ## Consequences
 
 - Everything is visible at a glance, no nesting.
+- Each row carries a leading status glyph (a filled green dot for running, a
+  filled red dot otherwise). The glyph is additive: the state word stays in the
+  text. Disabled row image readability was verified in
+  [disabled menu item images](../reference/disabled-menu-item-images.md).
 - A container with many ports yields a long line; ports are truncated.
 - A submenu is deferred until it carries actions.
 
