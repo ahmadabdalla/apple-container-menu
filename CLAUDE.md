@@ -40,6 +40,12 @@ Before writing code, ground every step in something written down: a decision in
 step has no such source, stop and ask. Do not fill the gap from training data or
 general convention; an unstated requirement is a question, not a default.
 
+When the spec does name a step, hold its prescriptions to its intent:
+
+- A stated behavior is a test to run, not an API to type.
+- A stated outcome is the contract; a prescribed API is only a hypothesis to verify.
+- Accessibility channels a spec defines are invariants that refactors must preserve.
+
 This is a behavior expectation, not an enforced gate. The repo trusts the agent
 to halt rather than guess, and trusts the human to specify enough that it rarely
 has to. The issue's Definition of Ready checklist is where that is confirmed
