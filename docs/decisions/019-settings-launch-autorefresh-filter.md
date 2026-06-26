@@ -54,6 +54,11 @@ container mutation, so read-only [001](001-read-only-scope.md) is preserved.
   read-only action that opens the host port in the browser.
 - Launch-at-login registration can fail silently under ad-hoc signing; the toggle
   reflects the real status rather than the requested one.
+- Launch-at-login makes the app auto-start at login and immediately run the
+  resolved `container` CLI, which on Apple silicon is a user-writable Homebrew
+  path (see [004](004-cli-binary-resolution.md)). Acceptable under the local
+  threat model; a later hardening could verify the binary's path or signature
+  before exec.
 
 ## Alternatives / deferred
 

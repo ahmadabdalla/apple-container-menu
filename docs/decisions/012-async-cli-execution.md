@@ -2,7 +2,7 @@
 type: Decision
 title: Async CLI execution
 description: Run the CLI off the main thread with async/await so the menu bar stays responsive.
-timestamp: 2026-06-21
+timestamp: 2026-06-26
 tags: [concurrency, cli, async]
 status: Accepted
 ---
@@ -23,7 +23,9 @@ Run the CLI off the main thread with Swift async/await.
 Wrap `Process` in a `Task`, read stdout and stderr via `Pipe`, decode the JSON,
 then hop to `@MainActor` to update the state (see
 [005](005-six-state-model.md)) and the cache (see
-[009](009-last-known-cache.md)). macOS 13 supports structured concurrency.
+[009](009-last-known-cache.md), retained under
+[018](018-swiftui-popover-ui.md)). The macOS 14 floor supports structured
+concurrency.
 
 ## Consequences
 

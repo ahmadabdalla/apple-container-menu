@@ -65,37 +65,56 @@ struct ContainerLabelTests {
         #expect(container.portsSummary == testCase.expected)
     }
 
-    @Test("A running row capsule joins the state word and uptime")
-    func runningStatusCapsule() throws {
+    struct StatusCapsuleCase: Sendable {
+        let state: String
+        let withStart: Bool
+        let expected: String
+    }
+
+    @Test("Capsule joins state and uptime when running with a start; bare state otherwise", arguments: [
+        StatusCapsuleCase(state: "running", withStart: true, expected: "running · up 2h"),
+        StatusCapsuleCase(state: "running", withStart: false, expected: "running"),
+        StatusCapsuleCase(state: "stopped", withStart: false, expected: "stopped"),
+        StatusCapsuleCase(state: "stopped", withStart: true, expected: "stopped"),
+    ])
+    func statusCapsule(_ testCase: StatusCapsuleCase) throws {
+        let container = try Fixtures.decodeContainer(
+            Fixtures.containerJSON(
+                state: testCase.state,
+                startedDateISO: testCase.withStart ? Fixtures.startedDateISO : nil
+            )
+        )
+        // Two hours after the start instant, so a running container reads "up 2h".
+        let now = (container.startedDate ?? Date.distantPast).addingTimeInterval(7200)
+
+        #expect(container.statusCapsule(now: now) == testCase.expected)
+    }
+
+    struct AccessibilityLabelCase: Sendable {
+        let state: String
+        let withStart: Bool
+        let ports: [PortPair]
+        let expected: String
+    }
+
+    @Test("Accessibility label joins name, status capsule, and ports", arguments: [
+        AccessibilityLabelCase(state: "running", withStart: true, ports: [PortPair(hostPort: 8080, count: 1)], expected: "web, running · up 2h, port :8080"),
+        AccessibilityLabelCase(state: "running", withStart: false, ports: [PortPair(hostPort: 8080, count: 1)], expected: "web, running, port :8080"),
+        AccessibilityLabelCase(state: "stopped", withStart: false, ports: [], expected: "web, stopped"),
+    ])
+    func accessibilityLabel(_ testCase: AccessibilityLabelCase) throws {
+        let pairs = testCase.ports.map { (hostPort: $0.hostPort, count: $0.count) }
         let container = try Fixtures.decodeContainer(
             Fixtures.containerJSON(
                 id: "web",
-                state: "running",
-                startedDateISO: Fixtures.startedDateISO
+                state: testCase.state,
+                startedDateISO: testCase.withStart ? Fixtures.startedDateISO : nil,
+                ports: pairs
             )
         )
-        let started = try #require(container.startedDate)
-        let now = started.addingTimeInterval(7200)
+        let now = (container.startedDate ?? Date.distantPast).addingTimeInterval(7200)
 
-        #expect(container.statusCapsule(now: now) == "running · up 2h")
-    }
-
-    @Test("A running row with no start date capsule is just the state word")
-    func runningStatusCapsuleWithoutStart() throws {
-        let container = try Fixtures.decodeContainer(
-            Fixtures.containerJSON(id: "svc", state: "running")
-        )
-
-        #expect(container.statusCapsule(now: Date.distantFuture) == "running")
-    }
-
-    @Test("A stopped row capsule is just the state word")
-    func stoppedStatusCapsule() throws {
-        let container = try Fixtures.decodeContainer(
-            Fixtures.containerJSON(id: "db", state: "stopped")
-        )
-
-        #expect(container.statusCapsule(now: Date.distantFuture) == "stopped")
+        #expect(container.accessibilityLabel(now: now) == testCase.expected)
     }
 
     struct FilterCase: Sendable {

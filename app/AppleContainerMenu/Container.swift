@@ -44,6 +44,15 @@ struct Container: Decodable, Identifiable {
         return "\(state) · \(uptime)"
     }
 
+    /// Combined VoiceOver label for a row: name, then the status capsule, then
+    /// the ports when published (ADRs 018, 019). A pure helper so the spoken
+    /// composition stays unit-testable rather than living only in the view.
+    func accessibilityLabel(now: Date) -> String {
+        var parts = [id, statusCapsule(now: now)]
+        if let ports = portsSummary { parts.append("port \(ports)") }
+        return parts.joined(separator: ", ")
+    }
+
     /// Case-insensitive substring match on the name for the live filter (ADR
     /// 019). An empty or whitespace-only query matches every row.
     func matches(filter query: String) -> Bool {

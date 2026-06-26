@@ -29,6 +29,12 @@ struct ContainerListView: View {
             chromeBar
         }
         .frame(width: popoverWidth)
+        // Each open should start on the list with no stale filter; the
+        // hosting controller is long-lived, so reset when the popover closes.
+        .onDisappear {
+            filter = ""
+            showingSettings = false
+        }
     }
 
     @ViewBuilder
@@ -140,8 +146,9 @@ struct ContainerRowView: View {
             Spacer(minLength: 8)
 
             HStack(spacing: 6) {
-                if let ports = container.portsSummary {
-                    PortChip(summary: ports, hostPort: container.publishedPorts.first?.hostPort)
+                if let ports = container.portsSummary,
+                   let hostPort = container.publishedPorts.first?.hostPort {
+                    PortChip(summary: ports, hostPort: hostPort)
                 }
                 statusToken
             }
@@ -150,7 +157,14 @@ struct ContainerRowView: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(accessibilityLabel)
+        .accessibilityLabel(container.accessibilityLabel(now: now))
+        // The collapsed row hides the PortChip button from VoiceOver, so expose
+        // the open action at the row level (ADRs 018, 019).
+        .accessibilityActions {
+            if let hostPort = container.publishedPorts.first?.hostPort {
+                Button("Open port") { PortChip.open(hostPort: hostPort) }
+            }
+        }
     }
 
     /// State word plus uptime, then the dot as the rightmost element so dots
@@ -167,26 +181,19 @@ struct ContainerRowView: View {
                 .foregroundStyle(container.isRunning ? Color.green : Color.secondary)
         }
     }
-
-    private var accessibilityLabel: String {
-        var parts = [container.id, container.statusCapsule(now: now)]
-        if let ports = container.portsSummary { parts.append("port \(ports)") }
-        return parts.joined(separator: ", ")
-    }
 }
 
 /// Accent capsule showing the published host port(s). The only row action
 /// (ADR 019): a click opens `http://localhost:<hostPort>` for the first port.
-/// Opening a URL is not a container mutation, so ADR 001 read-only holds.
+/// Opening a URL is not a container mutation, so ADR 001 read-only holds. The
+/// chip is built only when a host port exists, so the port is non-optional.
 struct PortChip: View {
     let summary: String
-    let hostPort: Int?
+    let hostPort: Int
 
     var body: some View {
         Button {
-            if let hostPort, let url = URL(string: "http://localhost:\(hostPort)") {
-                NSWorkspace.shared.open(url)
-            }
+            PortChip.open(hostPort: hostPort)
         } label: {
             Text(summary)
                 .font(.caption)
@@ -196,7 +203,13 @@ struct PortChip: View {
                 .background(Capsule().fill(Color.accentColor.opacity(0.15)))
         }
         .buttonStyle(.plain)
-        .disabled(hostPort == nil)
-        .help(hostPort.map { "Open http://localhost:\($0)" } ?? "")
+        .help("Open http://localhost:\(hostPort)")
+    }
+
+    /// Shared by the chip and the row-level accessibility action.
+    static func open(hostPort: Int) {
+        if let url = URL(string: "http://localhost:\(hostPort)") {
+            NSWorkspace.shared.open(url)
+        }
     }
 }

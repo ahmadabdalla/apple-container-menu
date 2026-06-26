@@ -21,7 +21,13 @@ enum AppSettings {
 @MainActor
 enum LaunchAtLogin {
     static var isEnabled: Bool {
-        SMAppService.mainApp.status == .enabled
+        // `.requiresApproval` means the item is registered but pending the
+        // user's approval in System Settings; treat it as on so the toggle does
+        // not snap back and trap the user in a re-toggle loop.
+        switch SMAppService.mainApp.status {
+        case .enabled, .requiresApproval: return true
+        default: return false
+        }
     }
 
     /// Register or unregister the login item. On failure the registration is
