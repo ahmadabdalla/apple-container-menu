@@ -11,7 +11,7 @@ running containers, one click away in the menu bar.
 Once built, `apple-container-menu` runs as a menu bar app (no Dock icon) and
 shows the state of containers managed by Apple's `container` CLI. The first
 release is read-only; mutating actions (start, stop, remove) are deferred (see
-[ADR 001](docs/decisions/001-read-only-scope.md)). It targets macOS 13 (Ventura)
+[ADR 001](docs/decisions/001-read-only-scope.md)). It targets macOS 14 (Sonoma)
 and later on Apple silicon.
 
 ## How to use

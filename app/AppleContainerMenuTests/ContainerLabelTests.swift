@@ -65,38 +65,58 @@ struct ContainerLabelTests {
         #expect(container.portsSummary == testCase.expected)
     }
 
-    @Test("A running row joins state, uptime, and ports")
-    func runningMenuLabel() throws {
+    @Test("A running row capsule joins the state word and uptime")
+    func runningStatusCapsule() throws {
         let container = try Fixtures.decodeContainer(
             Fixtures.containerJSON(
                 id: "web",
                 state: "running",
-                startedDateISO: Fixtures.startedDateISO,
-                ports: [(hostPort: 8080, count: 1)]
+                startedDateISO: Fixtures.startedDateISO
             )
         )
         let started = try #require(container.startedDate)
         let now = started.addingTimeInterval(7200)
 
-        #expect(container.menuLabel(now: now) == "web  running, up 2h, :8080")
+        #expect(container.statusCapsule(now: now) == "running · up 2h")
     }
 
-    @Test("A stopped row drops the uptime clause and ports")
-    func stoppedMenuLabel() throws {
+    @Test("A running row with no start date capsule is just the state word")
+    func runningStatusCapsuleWithoutStart() throws {
+        let container = try Fixtures.decodeContainer(
+            Fixtures.containerJSON(id: "svc", state: "running")
+        )
+
+        #expect(container.statusCapsule(now: Date.distantFuture) == "running")
+    }
+
+    @Test("A stopped row capsule is just the state word")
+    func stoppedStatusCapsule() throws {
         let container = try Fixtures.decodeContainer(
             Fixtures.containerJSON(id: "db", state: "stopped")
         )
 
-        #expect(container.menuLabel(now: Date.distantFuture) == "db  stopped")
+        #expect(container.statusCapsule(now: Date.distantFuture) == "stopped")
     }
 
-    @Test("A running row drops uptime but keeps ports when there is no start date")
-    func runningWithoutStartKeepsPorts() throws {
+    struct FilterCase: Sendable {
+        let id: String
+        let query: String
+        let matches: Bool
+    }
+
+    @Test("Name filter is a case-insensitive substring; blank matches all", arguments: [
+        FilterCase(id: "web", query: "", matches: true),
+        FilterCase(id: "web", query: "   ", matches: true),
+        FilterCase(id: "web-api", query: "API", matches: true),
+        FilterCase(id: "web-api", query: "ap", matches: true),
+        FilterCase(id: "web", query: "db", matches: false),
+    ])
+    func filterMatch(_ testCase: FilterCase) throws {
         let container = try Fixtures.decodeContainer(
-            Fixtures.containerJSON(id: "svc", state: "running", ports: [(hostPort: 8080, count: 1)])
+            Fixtures.containerJSON(id: testCase.id, state: "running")
         )
 
-        #expect(container.menuLabel(now: Date.distantFuture) == "svc  running, :8080")
+        #expect(container.matches(filter: testCase.query) == testCase.matches)
     }
 
     @Test("isRunning is case-insensitive")

@@ -4,10 +4,15 @@ title: AppKit status item open trigger
 description: Render the menu from an AppKit NSStatusItem so menuWillOpen can trigger the fetch on open.
 timestamp: 2026-06-21
 tags: [ui, appkit, menubarextra, fetch]
-status: Accepted
+status: Superseded
 ---
 
 # 15. AppKit status item open trigger
+
+Superseded by [018](018-swiftui-popover-ui.md): the status item now drives a
+SwiftUI `NSPopover` whose `popoverWillShow` triggers the fetch, replacing the
+`NSMenu` and its `menuWillOpen`. The reasoning below is kept as a record; it no
+longer describes the shipped UI.
 
 ## Context
 

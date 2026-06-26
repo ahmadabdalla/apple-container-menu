@@ -1,14 +1,17 @@
 import AppKit
+import SwiftUI
 
-/// Owns the status item and its menu, and triggers the fetch on open (ADRs 003,
-/// 015). `menuWillOpen` is the reliable open hook AppKit gives us: it renders the
-/// last-known cache synchronously, then kicks an async refresh that updates the
-/// cache for the next open (ADR 009). The menu never blocks on the CLI.
+/// Owns the status item and the SwiftUI popover, and triggers the fetch on open
+/// (ADRs 003, 018). `popoverWillShow` is the open hook: the cache renders first
+/// and a live fetch updates the open popover in place (ADR 018, superseding the
+/// `NSMenu` snapshot of ADR 015). When the user opts in, a poll loop refreshes
+/// at the configured interval for as long as the popover stays open (ADR 019).
 @MainActor
-final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private let store = ContainerStore()
     private var statusItem: NSStatusItem?
-    private let menu = NSMenu()
+    private let popover = NSPopover()
+    private var pollTask: Task<Void, Never>?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -16,89 +19,61 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             systemSymbolName: "shippingbox",
             accessibilityDescription: "Apple Container Menu"
         )
-        menu.delegate = self
-        menu.autoenablesItems = false
-        item.menu = menu
+        item.button?.target = self
+        item.button?.action = #selector(togglePopover)
         statusItem = item
-        rebuildMenu()
+
+        let hosting = NSHostingController(rootView: ContainerListView(store: store))
+        // Resize the popover as rows appear or disappear under a live update.
+        hosting.sizingOptions = .preferredContentSize
+        popover.contentViewController = hosting
+        popover.behavior = .transient
+        popover.delegate = self
     }
 
-    /// Render the last-known cache for this open, then refresh for the next one.
-    /// The refresh is async and non-blocking; the result cannot re-render this
-    /// open (the runloop is blocked while the menu is up, ADR 015), so it lands
-    /// in the cache and surfaces on the following open (ADR 009).
-    func menuWillOpen(_ menu: NSMenu) {
-        rebuildMenu()
+    /// Click toggles the popover. The `isShown` guard avoids the
+    /// close-then-reopen race on a single button click. The app is
+    /// `LSUIElement`, so it stays inactive when the status item is clicked and a
+    /// `.transient` popover would not dismiss on an outside click until first
+    /// focused; `NSApp.activate` makes the window key immediately so click-away
+    /// works like other menu-bar apps (ADR 018).
+    @objc private func togglePopover() {
+        guard let button = statusItem?.button else { return }
+        if popover.isShown {
+            popover.performClose(nil)
+        } else {
+            NSApp.activate(ignoringOtherApps: true)
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        }
+    }
+
+    func popoverWillShow(_ notification: Notification) {
         store.refresh()
+        startPolling()
     }
 
-    /// Map the six-state model (ADR 005) to native single-line items, with
-    /// Refresh and Quit fixed below the list (ADR 010). Informational rows are
-    /// disabled because the app is read-only (ADR 001).
-    private func rebuildMenu() {
-        menu.removeAllItems()
+    func popoverDidClose(_ notification: Notification) {
+        pollTask?.cancel()
+        pollTask = nil
+    }
 
-        switch store.state {
-        case .loading:
-            menu.addItem(infoItem("Checking..."))
-        case .cliNotFound:
-            menu.addItem(infoItem("container CLI not found"))
-        case .serviceNotRunning:
-            menu.addItem(infoItem("container service stopped"))
-        case .empty:
-            menu.addItem(infoItem("No containers"))
-        case .error(let message):
-            menu.addItem(infoItem("Error: \(message)"))
-        case .populated(let containers):
-            let now = Date()
-            for container in containers {
-                let item = infoItem(container.menuLabel(now: now))
-                item.image = statusImage(for: container)
-                menu.addItem(item)
+    /// Poll only while the popover is open, and only when the user has opted in.
+    /// The loop lives for the whole open and re-reads the settings each pass, so
+    /// toggling auto-refresh or the interval mid-open takes effect; it never
+    /// polls in the background, preserving the fetch-on-open model (ADRs 009,
+    /// 015, 018, 019).
+    private func startPolling() {
+        pollTask?.cancel()
+        pollTask = Task { [weak self] in
+            while !Task.isCancelled {
+                let interval = UserDefaults.standard.object(forKey: AppSettings.refreshIntervalKey) as? Int
+                    ?? AppSettings.defaultRefreshInterval
+                try? await Task.sleep(for: .seconds(max(1, interval)))
+                if Task.isCancelled { return }
+                if UserDefaults.standard.bool(forKey: AppSettings.autoRefreshEnabledKey) {
+                    self?.store.refresh()
+                }
             }
         }
-
-        menu.addItem(.separator())
-
-        let refresh = NSMenuItem(
-            title: "Refresh",
-            action: #selector(refreshClicked),
-            keyEquivalent: "r"
-        )
-        refresh.target = self
-        menu.addItem(refresh)
-
-        let quit = NSMenuItem(
-            title: "Quit",
-            action: #selector(quitClicked),
-            keyEquivalent: "q"
-        )
-        quit.target = self
-        menu.addItem(quit)
-    }
-
-    private func infoItem(_ title: String) -> NSMenuItem {
-        let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
-        item.isEnabled = false
-        return item
-    }
-
-    private func statusImage(for container: Container) -> NSImage? {
-        let symbolName = "circle.fill"
-        let color: NSColor = container.isRunning ? .systemGreen : .systemRed
-        let configuration = NSImage.SymbolConfiguration(pointSize: 9, weight: .semibold)
-            .applying(NSImage.SymbolConfiguration(paletteColors: [color]))
-        let image = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)?
-            .withSymbolConfiguration(configuration)
-        image?.isTemplate = false
-        return image
-    }
-
-    @objc private func refreshClicked() {
-        store.refresh()
-    }
-
-    @objc private func quitClicked() {
-        NSApplication.shared.terminate(nil)
     }
 }

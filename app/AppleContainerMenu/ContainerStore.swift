@@ -1,15 +1,18 @@
 import Foundation
+import Observation
 
 /// Holds the last-known fetch result and refreshes it asynchronously (ADRs 009,
-/// 012). The menu always has something to render synchronously; the UI never
-/// blocks on the CLI. The AppKit menu reads `state` on open (ADR 015), so no
-/// SwiftUI binding is needed.
+/// 012). The popover always has something to render synchronously; the UI never
+/// blocks on the CLI. `@Observable` lets the SwiftUI popover track `state` and
+/// update in place under a live fetch (ADR 018), which the old `NSMenu` snapshot
+/// could not.
 @MainActor
+@Observable
 final class ContainerStore {
     private(set) var state: MenuState = .loading
 
-    private let cli = ContainerCLI()
-    private var currentRefresh: Task<Void, Never>?
+    @ObservationIgnored private let cli = ContainerCLI()
+    @ObservationIgnored private var currentRefresh: Task<Void, Never>?
 
     init() {
         // Warm the cache at launch so later opens render data, not "Checking..."
