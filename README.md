@@ -3,16 +3,18 @@
 A native macOS menu bar app that surfaces Apple's `container` CLI status:
 running containers, one click away in the menu bar.
 
-> Status: early skeleton. The SwiftUI menu bar shell exists, but there is no
-> distributable app yet. Container monitoring lands in later issues.
+> Status: works locally, not yet distributed. The menu bar app monitors
+> containers today; there is no signed `.dmg` release yet.
 
 ## What it does
 
-Once built, `apple-container-menu` runs as a menu bar app (no Dock icon) and
-shows the state of containers managed by Apple's `container` CLI. The first
-release is read-only; mutating actions (start, stop, remove) are deferred (see
-[ADR 001](docs/decisions/001-read-only-scope.md)). It targets macOS 14 (Sonoma)
-and later on Apple silicon.
+`apple-container-menu` runs as a menu bar app (no Dock icon) and shows the state
+of containers managed by Apple's `container` CLI in a click-down popover:
+glanceable rows with name, image, published ports, and a running or stopped
+status token, plus a name filter and a settings panel (launch-at-login, refresh
+interval). It is read-only; mutating actions (start, stop, remove) are deferred
+(see [ADR 001](docs/decisions/001-read-only-scope.md)). It targets macOS 14
+(Sonoma) and later on Apple silicon.
 
 ## How to use
 
