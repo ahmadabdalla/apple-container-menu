@@ -56,7 +56,7 @@ struct Container: Decodable, Identifiable {
     /// Case-insensitive substring match on the name for the live filter (ADR
     /// 019). An empty or whitespace-only query matches every row.
     func matches(filter query: String) -> Bool {
-        let trimmed = query.trimmingCharacters(in: .whitespaces)
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return true }
         return id.range(of: trimmed, options: .caseInsensitive) != nil
     }

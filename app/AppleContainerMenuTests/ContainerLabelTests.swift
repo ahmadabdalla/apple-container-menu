@@ -126,6 +126,7 @@ struct ContainerLabelTests {
     @Test("Name filter is a case-insensitive substring; blank matches all", arguments: [
         FilterCase(id: "web", query: "", matches: true),
         FilterCase(id: "web", query: "   ", matches: true),
+        FilterCase(id: "web", query: "\t\n", matches: true),
         FilterCase(id: "web-api", query: "API", matches: true),
         FilterCase(id: "web-api", query: "ap", matches: true),
         FilterCase(id: "web", query: "db", matches: false),

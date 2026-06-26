@@ -65,7 +65,7 @@ macOS floor rises to 14 for `@Observable`.
 
 - Keep the `NSMenu` snapshot: rejected; it cannot lay out the richer row or update
   in place, which is the point of issue #24.
-- `MenuBarExtra .window` style: rejected; it has no reliable open hook (see
+- `MenuBarExtra` `.window` style: rejected; it has no reliable open hook (see
   [008](008-menubarextra-menu-style.md) and
   [015](015-appkit-status-item-open-trigger.md)), so the app drives the popover
   from an `NSStatusItem` directly.
