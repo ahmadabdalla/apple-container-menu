@@ -35,13 +35,30 @@ struct Container: Decodable, Identifiable {
         return extra > 0 ? "\(base) +\(extra)" : base
     }
 
-    /// Single inline row: `id  state, up Xh, :port`. A stopped row drops the
-    /// uptime clause; ports are appended when published (ADR 010).
-    func menuLabel(now: Date) -> String {
-        var parts = [state]
-        if let uptime = uptimeSummary(now: now) { parts.append(uptime) }
-        if let ports = portsSummary { parts.append(ports) }
-        return "\(id)  " + parts.joined(separator: ", ")
+    /// Status token for a row: `running · up 22h` when running with a known
+    /// start, or just the state word otherwise (a stopped row, or a running
+    /// one with no start date). Ports are not joined in; the chip is a separate
+    /// element (ADR 018).
+    func statusCapsule(now: Date) -> String {
+        guard let uptime = uptimeSummary(now: now) else { return state }
+        return "\(state) · \(uptime)"
+    }
+
+    /// Combined VoiceOver label for a row: name, then the status capsule, then
+    /// the ports when published (ADRs 018, 019). A pure helper so the spoken
+    /// composition stays unit-testable rather than living only in the view.
+    func accessibilityLabel(now: Date) -> String {
+        var parts = [id, statusCapsule(now: now)]
+        if let ports = portsSummary { parts.append("port \(ports)") }
+        return parts.joined(separator: ", ")
+    }
+
+    /// Case-insensitive substring match on the name for the live filter (ADR
+    /// 019). An empty or whitespace-only query matches every row.
+    func matches(filter query: String) -> Bool {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return true }
+        return id.range(of: trimmed, options: .caseInsensitive) != nil
     }
 
     private enum CodingKeys: String, CodingKey {

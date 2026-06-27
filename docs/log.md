@@ -1,5 +1,16 @@
 # Log
 
+## 2026-06-26
+
+* **Creation**: Added decision 018-swiftui-popover-ui.md (issue #24); the
+  menu-bar UI is now a SwiftUI NSPopover that fetches on popoverWillShow and
+  updates in place. Set 009-last-known-cache.md, 010-inline-rows-menu-chrome.md,
+  and 015-appkit-status-item-open-trigger.md to Superseded; raised the app macOS
+  target to 14.
+* **Creation**: Added decision 019-settings-launch-autorefresh-filter.md (issue
+  #24); inline settings panel, SMAppService launch-at-login, opt-in
+  poll-while-open, a name filter, and a port-opening row action.
+
 ## 2026-06-22
 
 * **Decision**: Added a leading status glyph to the menu rows (issue #25).

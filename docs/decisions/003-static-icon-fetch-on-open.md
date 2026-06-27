@@ -2,7 +2,7 @@
 type: Decision
 title: Static icon, fetch on open
 description: The menu bar icon is static and the app fetches once when the menu opens, with no background poll.
-timestamp: 2026-06-21
+timestamp: 2026-06-26
 tags: [ui, fetch, performance]
 status: Accepted
 ---
@@ -22,9 +22,11 @@ the menu opens, at which point it fetches once.
 
 ## How
 
-The fetch is triggered from `menuWillOpen` on the menu's delegate (see
-[015](015-appkit-status-item-open-trigger.md)). There is no timer and no
-background activity while the menu is closed. Idle cost is effectively zero.
+The fetch is triggered from `popoverWillShow` on the popover's delegate (see
+[018](018-swiftui-popover-ui.md)). There is no timer and no background activity
+while the popover is closed. Idle cost is effectively zero. Auto-refresh (see
+[019](019-settings-launch-autorefresh-filter.md)) is opt-in and polls only while
+the popover is open, so the no-background-poll stance here holds.
 
 ## Consequences
 

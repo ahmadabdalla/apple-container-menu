@@ -2,7 +2,7 @@
 type: Instruction
 title: Test target conventions
 description: How to write tests for AppleContainerMenuTests: Swift Testing, the unit/functional tiers, and the CLI seam.
-timestamp: 2026-06-21
+timestamp: 2026-06-26
 tags: [testing, swift, conventions]
 ---
 
@@ -38,9 +38,11 @@ Standing rules:
   no real `container`. The stub's heredoc stdout/stderr carry a trailing newline,
   which is safe only because `ContainerCLI.message(from:)` trims; do not remove
   that trim without updating the stub.
-- The test target deploys to macOS 14.0 (the Swift Testing and XCTest dylibs
-  require it); the app stays at 13.0. The split is deliberate, lives in
-  `project.pbxproj`, and must not be aligned.
+- The app and the test target both deploy to macOS 14.0: the app rose from 13.0
+  for the `@Observable` macro (decision
+  [018](../../docs/decisions/018-swiftui-popover-ui.md)), and the test target
+  already needed 14.0 for the Swift Testing and XCTest dylibs, so the deployment
+  targets now match in `project.pbxproj`.
 - Running the suite launches the host app, so `ContainerStore.init` performs a
   real `fetch()`. The run can stall if the local `container` misbehaves; that is
   the hosted-bundle cost, not a test bug.

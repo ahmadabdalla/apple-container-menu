@@ -4,10 +4,15 @@ title: Inline rows and menu chrome
 description: Each container is one inline single-line item with Refresh and Quit fixed below the list.
 timestamp: 2026-06-21
 tags: [ui, layout, menu]
-status: Accepted
+status: Superseded
 ---
 
 # 10. Inline rows and menu chrome
+
+Superseded by [018](018-swiftui-popover-ui.md): rows are now multi-line SwiftUI
+popover rows, not single-line menu items, though the shape-plus-colour status dot
+carries over. The reasoning below is kept as a record; it no longer describes the
+shipped UI.
 
 ## Context
 

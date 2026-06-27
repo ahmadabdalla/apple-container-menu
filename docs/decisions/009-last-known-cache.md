@@ -4,10 +4,15 @@ title: Last-known cache
 description: Render the last-known result synchronously on open and refresh the cache asynchronously.
 timestamp: 2026-06-21
 tags: [cache, ui, async]
-status: Accepted
+status: Superseded
 ---
 
 # 9. Last-known cache
+
+Superseded by [018](018-swiftui-popover-ui.md): the popover updates in place, so
+the instant-render-on-open behaviour is kept while the one-open-stale half is
+gone. The reasoning below is kept as a record; it no longer describes the shipped
+UI.
 
 ## Context
 
